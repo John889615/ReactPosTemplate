@@ -14,20 +14,24 @@ import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import store from "./core/redux/store.jsx";
 import AllRoutes from "./Router/router.jsx";
+import { AuthProvider } from "./context/AuthContext"; // Adjust the path if needed
+
 
 const rootElement = document.getElementById("root");
 
 if (rootElement) {
-    const root = createRoot(rootElement);
-    root.render(
-        <React.StrictMode>
-            <Provider store={store}>
-                <BrowserRouter basename={base_path}>
-                    <AllRoutes />
-                </BrowserRouter>
-            </Provider>
-        </React.StrictMode>
-    );
+  const root = createRoot(rootElement);
+  root.render(
+    <React.StrictMode>
+      <Provider store={store}>
+        <AuthProvider>
+          <BrowserRouter basename={base_path}>
+            <AllRoutes />
+          </BrowserRouter>
+        </AuthProvider>
+      </Provider>
+    </React.StrictMode>
+  );
 } else {
-    console.error("Element with id 'root' not found.");
+  console.error("Element with id 'root' not found.");
 }

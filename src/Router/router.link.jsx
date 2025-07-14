@@ -205,6 +205,33 @@ import Leaflet from "../feature-module/uiinterface/map/leaflet";
 import BootstrapIcons from "../feature-module/uiinterface/icons/bootstrapicons";
 import RemixIcons from "../feature-module/uiinterface/icons/remixIcons";
 import TablerIcon from "../feature-module/uiinterface/icons/tablericon";
+import EntityDataAddress from "../feature-module/EntityData/Address/address";
+import EntityDataAddressRegion from "../feature-module/EntityData/AddressRegion/addressRegion";
+import EntityDataAddressType from "../feature-module/EntityData/Address/addressType";
+import EntityDataContact from "../feature-module/EntityData/Contact/contact";
+import EntityDataContactType from "../feature-module/EntityData/Contact/contactType";
+import EntityDataContinent from "../feature-module/EntityData/Continent/continent";
+import EntityDataCountries from "../feature-module/EntityData/Country/countries";
+import EntityDataCountryProvince from "../feature-module/EntityData/Country/countryProvince";
+import EntityDataCountryRegion from "../feature-module/EntityData/Country/countryRegion";
+import EntityDataCountrySubRegion from "../feature-module/EntityData/Country/countrySubRegion";
+import EntityDataCurrency from "../feature-module/EntityData/Currency/currency";
+import EntityDialingCode from "../feature-module/EntityData/DialingCode/dialingCode";
+import EntityDataEntities from "../feature-module/EntityData/Entities/entities";
+import EntityDataEntityAddress from "../feature-module/EntityData/Entities/entityAddress";
+import EntityDataEntityContact from "../feature-module/EntityData/Entities/entityContact";
+import EntityDataStatus from "../feature-module/EntityData/Status/status";
+import EntityDataStatusGroup from "../feature-module/EntityData/Status/statusGroup";
+import EntityDataTimeZone from "../feature-module/EntityData/TimeZone/timeZone";
+import Debtors from "../feature-module/Debtor/debtors";
+import CostCenter from "../feature-module/Debtor/costCenter";
+import Creditor from "../feature-module/Creditor/creditor";
+import UnitPage from "../feature-module/Products/units";
+import ProductCategory from "../feature-module/Products/productCategory";
+import ProductType from "../feature-module/Products/productType";
+import ProductPage from "../feature-module/Products/product";
+
+
 export const publicRoutes = [
   {
     id: 1,
@@ -1479,6 +1506,181 @@ export const publicRoutes = [
     path: routes.payrollList,
     name: "payroll-list",
     element: <PayrollList />,
+    route: Route,
+  },
+  {
+    id: 120,
+    path: routes.entityDataAddress,
+    name: "entity-data-address",
+    element: <EntityDataAddress />,
+    route: Route,
+  },
+  {
+    id: 121,
+    path: routes.entityDataAddressRegion,
+    name: "entity-data-address-region",
+    element: <EntityDataAddressRegion />,
+    route: Route,
+  },
+  {
+    id: 122,
+    path: routes.entityDataAddressType,
+    name: "entity-data-address-type",
+    element: <EntityDataAddressType />,
+    route: Route,
+  },
+  {
+    id: 123,
+    path: routes.entityDataContact,
+    name: "entity-data-contact",
+    element: <EntityDataContact />,
+    route: Route,
+  },
+  {
+    id: 124,
+    path: routes.entityDataContactType,
+    name: "entity-data-contact-type",
+    element: <EntityDataContactType />,
+    route: Route,
+  },
+  {
+    id: 125,
+    path: routes.entityDataContinent,
+    name: "entity-data-continent",
+    element: <EntityDataContinent />,
+    route: Route,
+  },
+  {
+    id: 126,
+    path: routes.entityDataCountry,
+    name: "countries",
+    element: <EntityDataCountries />,
+    route: Route,
+  },
+  {
+    id: 127,
+    path: routes.entityDataCountryProvince,
+    name: "country-province",
+    element: <EntityDataCountryProvince />,
+    route: Route,
+  },
+  {
+    id: 128,
+    path: routes.entityDataCountryRegion,
+    name: "country-region",
+    element: <EntityDataCountryRegion />,
+    route: Route,
+  },
+  {
+    id: 129,
+    path: routes.entityDataCountrySubRegion,
+    name: "country-sub-region",
+    element: <EntityDataCountrySubRegion />,
+    route: Route,
+  },
+  {
+    id: 130,
+    path: routes.entityDataCurrencies,
+    name: "currencies",
+    element: <EntityDataCurrency />,
+    route: Route,
+  },
+  {
+    id: 131,
+    path: routes.entityDataDialingCode,
+    name: "dialing-code",
+    element: <EntityDialingCode />,
+    route: Route,
+  },
+  {
+    id: 132,
+    path: routes.entityDataEntities,
+    name: "entities",
+    element: <EntityDataEntities />,
+    route: Route,
+  },
+  {
+    id: 133,
+    path: routes.entityDataEntitiesAddress,
+    name: "entity-address",
+    element: <EntityDataEntityAddress />,
+    route: Route,
+  },
+  {
+    id: 134,
+    path: routes.entityDataEntitiesContact,
+    name: "entity-contact",
+    element: <EntityDataEntityContact />,
+    route: Route,
+  },
+  {
+    id: 135,
+    path: routes.entityDataStatus,
+    name: "status",
+    element: <EntityDataStatus />,
+    route: Route,
+  },
+  {
+    id: 136,
+    path: routes.entityDataStatusGroup,
+    name: "status-group",
+    element: <EntityDataStatusGroup />,
+    route: Route,
+  },
+  {
+    id: 137,
+    path: routes.entityDataTimeZone,
+    name: "time-zone",
+    element: <EntityDataTimeZone />,
+    route: Route,
+  },
+  {
+    id: 138,
+    path: routes.debtor,
+    name: "debtors",
+    element: <Debtors />,
+    route: Route,
+  },
+  {
+    id: 139,
+    path: routes.costCenter,
+    name: "cost-center",
+    element: <CostCenter />,
+    route: Route,
+  },
+  {
+    id: 140,
+    path: routes.creditors,
+    name: "creditor",
+    element: <Creditor />,
+    route: Route,
+  },
+  {
+    id: 141,
+    path: routes.productUnit,
+    name: "product-units",
+    element: <UnitPage />,
+    route: Route,
+  },
+  {
+    id: 142,
+    path: routes.productCategory,
+    name: "product-category",
+    element: <ProductCategory />,
+    route: Route,
+  },
+  {
+    id: 143,
+    path: routes.productType,
+    name: "product-type",
+    element: <ProductType />,
+    route: Route,
+  },
+  {
+    id: 144,
+    path: routes.products,
+    name: "products",
+    element: <ProductPage />,
     route: Route,
   },
 ];

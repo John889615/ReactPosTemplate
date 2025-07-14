@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import ImageWithBasePath from "../../core/img/imagewithbasebath";
@@ -14,13 +14,17 @@ import Table from "../../core/pagination/datatable";
 import AddRole from "../../core/modals/usermanagement/addrole";
 import EditRole from "../../core/modals/usermanagement/editrole";
 import { all_routes } from "../../Router/all_routes";
-// import { all_routes } from "../../Router/all_routes";
+import { getAllRoles, newRole, updateRole } from "../../services/usermanagement/roleService";
+
 
 const RolesPermissions = () => {
   const route = all_routes;
+  const [showInlineForm, setShowInlineForm] = useState(false);
+  const [newRoleName, setNewRoleName] = useState('');
   const data = useSelector((state) => state.toggle_header);
-  const dataSource = useSelector((state) => state.rolesandpermission_data);
-
+  // const dataSource = useSelector((state) => state.rolesandpermission_data);
+  const [selectedRole, setSelectedRole] = useState(null);
+  const [showModel, setModelShow] = useState(false);
   const dispatch = useDispatch();
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const toggleFilterVisibility = () => {
@@ -36,10 +40,31 @@ const RolesPermissions = () => {
     { value: "AcStore ", label: "AcStore" },
     { value: "Admin", label: "Admin" },
   ];
+
+  const [roleList, setRoleList] = useState([]);
+
+
   const [selectedDate, setSelectedDate] = useState(new Date());
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
+
+  useEffect(() => {
+    fetchRoles();
+  }, []);
+
+  const fetchRoles = async () => {
+    try {
+      const users = await getAllRoles();
+      console.log("user: ", users);
+      setRoleList(users); // or dispatch to Redux if needed
+    } catch (err) {
+      console.error("Failed to load users:", err.message);
+    }
+  };
+
+  const handleClose = () => setModelShow(false);
+
   const renderTooltip = (props) => (
     <Tooltip id="pdf-tooltip" {...props}>
       Pdf
@@ -65,32 +90,49 @@ const RolesPermissions = () => {
       Collapse
     </Tooltip>
   );
+
+  const handleEditRole = (record) => {
+    setSelectedRole(record);
+    setModelShow(true);
+  };
+
   const columns = [
     {
       title: "Role Name",
-      dataIndex: "rolename",
-      sorter: (a, b) => a.rolename.length - b.rolename.length,
+      dataIndex: "Role",
+      sorter: (a, b) => a.Role.length - b.Role.length,
     },
     {
-      title: "Created On",
-      dataIndex: "createdon",
-      sorter: (a, b) => a.createdon.length - b.createdon.length,
+      title: "Description",
+      dataIndex: "Description",
+      sorter: (a, b) => a.Description.length - b.Description.length,
     },
-
+    {
+      title: "Status",
+      dataIndex: "IsActive",
+      render: (isActive) => (
+        <span
+          className={`badge ${isActive ? "badge-linesuccess" : "badge-linedanger"
+            }`}
+        >
+          {isActive ? "Active" : "Inactive"}
+        </span>
+      ),
+      sorter: (a, b) => Number(b.IsActive) - Number(a.IsActive),
+    },
     {
       title: "Actions",
       dataIndex: "actions",
       key: "actions",
-      render: () => (
+      render: (_, record) => (
         <div className="action-table-data">
           <div className="edit-delete-action">
             <Link
               className="me-2 p-2"
               to="#"
-              data-bs-toggle="modal"
-              data-bs-target="#edit-units"
+              onClick={() => handleEditRole(record)} // 🧠 Use the method
             >
-              <i data-feather="edit" className="feather-edit"></i>
+              <i className="feather-edit"></i>
             </Link>
             <Link className="me-2 p-2" to={route.permissions}>
               <i
@@ -138,6 +180,29 @@ const RolesPermissions = () => {
       }
     });
   };
+
+  const handleQuickSaveRole = async () => {
+    if (!newRoleName.trim()) return;
+
+    try {
+      await newRole({ Role: newRoleName.trim() });
+
+      setShowInlineForm(false);
+      setNewRoleName('');
+      fetchRoles();
+    } catch (error) {
+      console.error("Error saving role:", error);
+    }
+  };
+
+  const UpdateRole = async (roleData) => {
+    console.log("Update Role vales", roleData);
+    await updateRole(roleData);
+    fetchRoles();
+    setModelShow(false);
+  };
+
+
   return (
     <div>
       <div className="page-wrapper">
@@ -199,40 +264,74 @@ const RolesPermissions = () => {
                   </Link>
                 </OverlayTrigger>
               </li>
+              <li className="d-flex align-items-center gap-2">
+                {showInlineForm && (
+                  <form
+                    className="d-flex align-items-center gap-2"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handleQuickSaveRole();
+                    }}
+                  >
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Enter Role Name"
+                      value={newRoleName}
+                      onChange={(e) => setNewRoleName(e.target.value)}
+                      style={{ maxWidth: 300 }}
+                      required
+                    />
+                    <button type="submit" className="btn btn-submit">
+                      Save
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-cancel"
+                      onClick={() => {
+                        setShowInlineForm(false);
+                        setNewRoleName('');
+                      }}
+                    >
+                      Cancel
+                    </button>
+                  </form>
+                )}
+
+              </li>
+
             </ul>
             <div className="page-btn">
-              <a
-                to="#"
+              <button
+                type="button"
                 className="btn btn-added"
-                data-bs-toggle="modal"
-                data-bs-target="#add-units"
+                onClick={() => setShowInlineForm(true)}
               >
                 <PlusCircle className="me-2" />
                 Add New Role
-              </a>
+              </button>
             </div>
           </div>
           {/* /product list */}
           <div className="card table-list-card">
             <div className="card-body">
               <div className="table-top">
-              <div className="search-set">
-                <div className="search-input">
-                  <input
-                    type="text"
-                    placeholder="Search"
-                    className="form-control form-control-sm formsearch"
-                  />
-                  <Link to className="btn btn-searchset">
-                    <i data-feather="search" className="feather-search" />
-                  </Link>
-                </div>
+                <div className="search-set">
+                  <div className="search-input">
+                    <input
+                      type="text"
+                      placeholder="Search"
+                      className="form-control form-control-sm formsearch"
+                    />
+                    <Link to className="btn btn-searchset">
+                      <i data-feather="search" className="feather-search" />
+                    </Link>
+                  </div>
                 </div>
                 <div className="search-path">
                   <Link
-                    className={`btn btn-filter ${
-                      isFilterVisible ? "setclose" : ""
-                    }`}
+                    className={`btn btn-filter ${isFilterVisible ? "setclose" : ""
+                      }`}
                     id="filter_search"
                   >
                     <Filter
@@ -306,7 +405,7 @@ const RolesPermissions = () => {
               </div>
               {/* /Filter */}
               <div className="table-responsive">
-                <Table columns={columns} dataSource={dataSource} />
+                <Table columns={columns} dataSource={roleList} />
               </div>
             </div>
           </div>
@@ -314,7 +413,7 @@ const RolesPermissions = () => {
         </div>
       </div>
       <AddRole />
-      <EditRole />
+      <EditRole show={showModel} onHide={handleClose} roleData={selectedRole} onSave={UpdateRole} />
     </div>
   );
 };

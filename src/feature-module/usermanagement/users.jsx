@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { OverlayTrigger, Tooltip, Button, Toast } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ImageWithBasePath from "../../core/img/imagewithbasebath";
 import { ChevronUp, RotateCcw } from "feather-icons-react/build/IconComponents";
@@ -14,41 +14,57 @@ import {
   Zap,
 } from "react-feather";
 import Select from "react-select";
-import withReactContent from "sweetalert2-react-content";
-import Swal from "sweetalert2";
 import Table from "../../core/pagination/datatable";
 import AddUsers from "../../core/modals/usermanagement/addusers";
 import EditUser from "../../core/modals/usermanagement/edituser";
+import AssignRoleToUser from "../../core/modals/usermanagement/assignRoleToUser";
+
+import { getAllUsers, newUser, getUserRole, assignNewRole, deleteUserRole } from "../../services/usermanagement/userService";
+import { getAllRoles } from "../../services/usermanagement/roleService";
 
 const Users = () => {
-  const oldandlatestvalue = [
-    { value: "date", label: "Sort by Date" },
-    { value: "newest", label: "Newest" },
-    { value: "oldest", label: "Oldest" },
-  ];
-  const users = [
-    { value: "Choose Name", label: "Choose Name" },
-    { value: "Lilly", label: "Lilly" },
-    { value: "Benjamin", label: "Benjamin" },
-  ];
-  const status = [
-    { value: "Choose Name", label: "Choose Status" },
-    { value: "Active", label: "Active" },
-    { value: "InActive", label: "InActive" },
-  ];
-  const role = [
-    { value: "Choose Role", label: "Choose Role" },
-    { value: "AcStore Keeper", label: "Store Keeper" },
-    { value: "Salesman", label: "Salesman" },
-  ];
-
+  const [usersList, setUsersList] = useState([]);
+  const [roleList, setRoleList] = useState([]);
+  const [userAssignRole, setUserAssignRole] = useState([]);
+  const [showModel, setModelShow] = useState(false);
+  const [showRoleModel, setRoleModelShow] = useState(false);
+  const [showDangerToast, setShowDangerToast] = useState(false);
   const dispatch = useDispatch();
   const data = useSelector((state) => state.toggle_header);
-  const dataSource = useSelector((state) => state.userlist_data);
+  // const dataSource = useSelector((state) => state.userlist_data);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedUserForRole, setSelectedUserForRole] = useState(null);
   const toggleFilterVisibility = () => {
     setIsFilterVisible((prevVisibility) => !prevVisibility);
   };
+
+  useEffect(() => {
+    fetchUsers();
+    fetchUserRoles();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const users = await getAllUsers();
+      setUsersList(users); // or dispatch to Redux if needed
+    } catch (err) {
+      console.error("Failed to load users:", err.message);
+    }
+  };
+
+  const fetchUserRoles = async () => {
+    try {
+      const role = await getAllRoles();
+      setRoleList(role); // or dispatch to Redux if needed
+    } catch (err) {
+      console.error("Failed to load users:", err.message);
+    }
+  };
+
+  const handleShow = () => setModelShow(true);
+  const handleClose = () => setModelShow(false);
+  const handleRoleClose = () => setRoleModelShow(false);
 
   const renderTooltip = (props) => (
     <Tooltip id="pdf-tooltip" {...props}>
@@ -76,118 +92,130 @@ const Users = () => {
     </Tooltip>
   );
 
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setShowDangerToast(false);
+    }, 6000);
+    return () => clearTimeout(timeoutId);
+  }, [showDangerToast]);
+
+  const handleAddUser = async (userData) => {
+    try {
+      const result = await newUser(userData);
+      if (!result.Success) {
+        setShowDangerToast(true);
+        return;
+      }
+      fetchUsers();
+      setModelShow(false);
+    } catch (err) {
+      console.error("Error creating user:", err.message);
+    }
+  };
+
+  const handleDangerToastClose = () => {
+    setShowDangerToast(false);
+  };
+
   const columns = [
     {
-      title: "User Name",
-      dataIndex: "username",
-      render: (text, record) => (
-        <span className="userimgname">
-          <Link to="#" className="userslist-img bg-img">
-            <ImageWithBasePath alt="" src={record.img} />
-          </Link>
-          <div>
-            <Link to="#">{text}</Link>
-          </div>
-        </span>
-      ),
-      sorter: (a, b) => a.username.length - b.username.length,
+      title: "User ID",
+      dataIndex: "UserID",
+      sorter: (a, b) => a.UserID - b.UserID,
     },
-
     {
-      title: "Phone",
-      dataIndex: "phone",
-      sorter: (a, b) => a.phone.length - b.phone.length,
+      title: "Name",
+      render: (text, record) => (
+        <span>{`${record.FirstName || ""} ${record.LastName || ""}`.trim()}</span>
+      ),
+      sorter: (a, b) => {
+        const nameA = `${a.FirstName || ""} ${a.LastName || ""}`.toLowerCase();
+        const nameB = `${b.FirstName || ""} ${b.LastName || ""}`.toLowerCase();
+        return nameA.localeCompare(nameB);
+      },
     },
     {
       title: "Email",
-      dataIndex: "email",
-      sorter: (a, b) => a.email.length - b.email.length,
+      dataIndex: "Email",
+      sorter: (a, b) => a.Email.localeCompare(b.Email),
     },
     {
-      title: "Role",
-      dataIndex: "role",
-      sorter: (a, b) => a.role.length - b.role.length,
-    },
-    {
-      title: "Created On",
-      dataIndex: "createdon",
-      sorter: (a, b) => a.createdon.length - b.createdon.length,
+      title: "Username",
+      dataIndex: "Username",
+      sorter: (a, b) => a.Username.localeCompare(b.Username),
     },
     {
       title: "Status",
-      dataIndex: "status",
-      render: (text) => (
-        <div>
-          {text === "Active" && (
-            <span className="badge badge-linesuccess">{text}</span>
-          )}
-          {text === "Inactive" && (
-            <span className="badge badge-linedanger">{text}</span>
-          )}
-        </div>
+      dataIndex: "IsActive",
+      render: (isActive) => (
+        <span
+          className={`badge ${isActive ? "badge-linesuccess" : "badge-linedanger"
+            }`}
+        >
+          {isActive ? "Active" : "Inactive"}
+        </span>
       ),
-      sorter: (a, b) => a.status.length - b.status.length,
+      sorter: (a, b) => Number(b.IsActive) - Number(a.IsActive),
     },
     {
       title: "Actions",
       dataIndex: "actions",
       key: "actions",
-      render: () => (
+      render: (_, record) => (
         <div className="action-table-data">
           <div className="edit-delete-action">
-            <Link className="me-2 p-2" to="#">
-              <i
-                data-feather="eye"
-                className="feather feather-eye action-eye"
-              ></i>
+            <Link to="#" onClick={() => handleRole(record.UserID)} className="me-2 p-2">
+              <i data-feather="settings" className="feather feather-settings shield"></i>
             </Link>
             <Link
               className="me-2 p-2"
               to="#"
-              data-bs-toggle="modal"
-              data-bs-target="#edit-units"
+              onClick={() => handleEditRole(record)} // 🧠 Use the method
             >
-              <i data-feather="edit" className="feather-edit"></i>
-            </Link>
-            <Link className="confirm-text p-2" to="#">
-              <i
-                data-feather="trash-2"
-                className="feather-trash-2"
-                onClick={showConfirmationAlert}
-              ></i>
+              <i className="feather-edit"></i>
             </Link>
           </div>
         </div>
       ),
-    },
+    }
   ];
-  const MySwal = withReactContent(Swal);
 
-  const showConfirmationAlert = () => {
-    MySwal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      showCancelButton: true,
-      confirmButtonColor: "#00ff00",
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonColor: "#ff0000",
-      cancelButtonText: "Cancel",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        MySwal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          className: "btn btn-success",
-          confirmButtonText: "OK",
-          customClass: {
-            confirmButton: "btn btn-success",
-          },
-        });
-      } else {
-        MySwal.close();
-      }
-    });
+  const handleEditRole = (record) => {
+    console.log("User Data", record);
+    setSelectedUser(record);
+    setModelShow(true);
   };
+
+  const handleRole = async (Id) => {
+    const userRole = await getUserRole(Id);
+    console.log('User Role:', userRole);
+    setSelectedUserForRole(Id);
+    setUserAssignRole(userRole.Data)
+    setRoleModelShow(true);
+  };
+
+  const AssignRole = async (roleId) => {
+    console.log("Role Id", roleId);
+    var data = {
+      FK_UserID: selectedUserForRole,
+      FK_RoleID: roleId
+    }
+
+    const result = await assignNewRole(data);
+    if (result.Success) {
+      const userRole = await getUserRole(selectedUserForRole);
+      setUserAssignRole(userRole.Data)
+    }
+  };
+
+  const DeleteRole = async (userRoleId) => {
+    const result = await deleteUserRole(userRoleId);
+    if (result.Success) {
+      const userRole = await getUserRole(selectedUserForRole);
+      setUserAssignRole(userRole.Data)
+    }
+  };
+
   return (
     <div>
       <div className="page-wrapper">
@@ -251,15 +279,10 @@ const Users = () => {
               </li>
             </ul>
             <div className="page-btn">
-              <a
-                to="#"
-                className="btn btn-added"
-                data-bs-toggle="modal"
-                data-bs-target="#add-units"
-              >
+              <Button variant="none" className="btn btn-added" onClick={handleShow}>
                 <PlusCircle className="me-2" />
                 Add New User
-              </a>
+              </Button>
             </div>
           </div>
           {/* /product list */}
@@ -280,9 +303,8 @@ const Users = () => {
                 </div>
                 <div className="search-path">
                   <Link
-                    className={`btn btn-filter ${
-                      isFilterVisible ? "setclose" : ""
-                    }`}
+                    className={`btn btn-filter ${isFilterVisible ? "setclose" : ""
+                      }`}
                     id="filter_search"
                   >
                     <Filter
@@ -302,7 +324,6 @@ const Users = () => {
                   <Select
                     className="img-select"
                     classNamePrefix="react-select"
-                    options={oldandlatestvalue}
                     placeholder="Newest"
                   />
                 </div>
@@ -321,7 +342,7 @@ const Users = () => {
                         <Select
                           className="img-select"
                           classNamePrefix="react-select"
-                          options={users}
+                          options={usersList}
                           placeholder="Newest"
                         />
                       </div>
@@ -345,7 +366,6 @@ const Users = () => {
                         <Select
                           className="img-select"
                           classNamePrefix="react-select"
-                          options={role}
                           placeholder="Choose Role"
                         />
                       </div>
@@ -367,14 +387,47 @@ const Users = () => {
               </div>
               {/* /Filter */}
               <div className="table-responsive">
-                <Table columns={columns} dataSource={dataSource} />
+                <Table columns={columns} dataSource={usersList} />
               </div>
             </div>
           </div>
           {/* /product list */}
         </div>
+        <div className="toast-container position-fixed top-0 end-0 p-3">
+          <Toast
+            show={showDangerToast}
+            onClose={handleDangerToastClose}
+            id="dangerToast"
+            className="colored-toast bg-danger-transparent"
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+          >
+            <Toast.Header closeButton className="bg-danger text-fixed-white">
+              <strong className="me-auto">Error</strong>
+              <Button
+                variant="close"
+                onClick={handleDangerToastClose}
+                aria-label="Close"
+              />
+            </Toast.Header>
+            <Toast.Body>
+              {/* Add your toast content here */}
+              Username already in use.
+            </Toast.Body>
+          </Toast>
+        </div>
+
       </div>
-      <AddUsers />
+
+      <AddUsers roleList={roleList} onSubmitUser={handleAddUser} showModel={showModel} handleClose={handleClose} userData={selectedUser} />
+      <AssignRoleToUser
+        roleList={userAssignRole}
+        show={showRoleModel}
+        onHide={handleRoleClose}
+        onSave={AssignRole}
+        onDeleteRole={DeleteRole}
+      />
       <EditUser />
     </div>
   );

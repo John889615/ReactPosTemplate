@@ -490,6 +490,197 @@ export const SidebarData = [
     ],
   },
   {
+    label: "Debtor",
+    submenuOpen: true,
+    showSubRoute: false,
+    submenuHdr: "Debtor",
+    submenuItems: [
+      {
+        label: "Debtor",
+        link: "/debtors",
+        icon: <Icon.Tag />,
+        showSubRoute: false,
+      },
+      {
+        label: "Cost Center",
+        link: "/cost-center",
+        icon: <Icon.Globe />,
+        showSubRoute: false,
+      },
+    ],
+  },
+  {
+    label: "Creditor",
+    submenuOpen: true,
+    showSubRoute: false,
+    submenuHdr: "Creditor",
+    submenuItems: [
+      {
+        label: "Creditor",
+        link: "/creditor",
+        icon: <Icon.Tag />,
+        showSubRoute: false,
+      },
+    ],
+  },
+  {
+    label: "Iventory",
+    submenuOpen: true,
+    showSubRoute: false,
+    submenuHdr: "Iventory",
+    submenuItems: [
+      {
+        label: "Products",
+        link: "/products",
+        icon: <Icon.Package />,
+        showSubRoute: false,
+      },
+      {
+        label: "Product Category",
+        link: "/product-category",
+        icon: <Icon.Folder />,
+        showSubRoute: false,
+      },
+      {
+        label: "Product Type",
+        link: "/product-type",
+        icon: <Icon.Layers />,
+        showSubRoute: false,
+      },
+      {
+        label: "Units",
+        link: "/product-units",
+        icon: <Icon.Hash  />,
+        showSubRoute: false,
+      },
+    ],
+  },
+  {
+    label: "Entity Data",
+    submenuOpen: true,
+    showSubRoute: false,
+    submenuHdr: "Entity Data",
+    submenuItems: [
+      {
+        label: "Address",
+        link: "/entity-data-address",
+        icon: <Icon.MapPin />,
+        showSubRoute: false,
+      },
+      {
+        label: "Address Region",
+        link: "/entity-data-address-region",
+        icon: <Icon.Globe />,
+        showSubRoute: false,
+      },
+      {
+        label: "Address Type",
+        link: "/entity-data-address-type",
+        icon: <Icon.Tag />,
+        showSubRoute: false,
+      },
+      {
+        label: "Contact",
+        link: "/entity-data-contact",
+        icon: <Icon.Phone />,
+        showSubRoute: false,
+      },
+      {
+        label: "Contact Type",
+        link: "/entity-data-contact-type",
+        icon: <Icon.BookOpen />,
+        showSubRoute: false,
+      },
+      {
+        label: "Continents",
+        link: "/entity-data-continent",
+        icon: <Icon.Globe />,
+        showSubRoute: false,
+      },
+
+      {
+        label: "Countries",
+        link: "/countries",
+        icon: <Icon.Flag />,
+        showSubRoute: false,
+      },
+
+      {
+        label: "Country Province",
+        link: "/country-province",
+        icon: <Icon.Map />,
+        showSubRoute: false,
+      },
+
+      {
+        label: "Country Region",
+        link: "/country-region",
+        icon: <Icon.MapPin />,
+        showSubRoute: false,
+      },
+
+      {
+        label: "Country Subregion",
+        link: "/country-sub-region",
+        icon: <Icon.Map />,
+        showSubRoute: false,
+      },
+
+      {
+        label: "Currency",
+        link: "/currencies",
+        icon: <Icon.DollarSign />,
+        showSubRoute: false,
+      },
+      {
+        label: "Dialing Code",
+        link: "/dialing-code",
+        icon: <Icon.PhoneCall />,
+        showSubRoute: false,
+      },
+      {
+        label: "Entities",
+        link: "/entities",
+        icon: <Icon.User />,
+        showSubRoute: false,
+      },
+      {
+        label: "Entity Address",
+        link: "/entity-address",
+        icon: <Icon.Home />,
+        showSubRoute: false,
+      },
+
+      {
+        label: "Entity Contact",
+        link: "/entity-contact",
+        icon: <Icon.Phone />,
+        showSubRoute: false,
+      },
+
+      {
+        label: "Status",
+        link: "/status",
+        icon: <Icon.ToggleLeft />,
+        showSubRoute: false,
+      },
+
+      {
+        label: "Status Group",
+        link: "/status-group",
+        icon: <Icon.ToggleRight />,
+        showSubRoute: false,
+      },
+
+      {
+        label: "Time zone",
+        link: "/time-zone",
+        icon: <Icon.Clock />,
+        showSubRoute: false,
+      },
+    ],
+  },
+  {
     label: "Pages",
     submenuOpen: true,
     showSubRoute: false,

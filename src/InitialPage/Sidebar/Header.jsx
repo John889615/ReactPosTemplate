@@ -4,12 +4,13 @@ import FeatherIcon from "feather-icons-react";
 import ImageWithBasePath from "../../core/img/imagewithbasebath";
 import { Search, Settings, User, XCircle } from "react-feather";
 import { all_routes } from "../../Router/all_routes";
+import { useAuth } from "../../context/AuthContext";
 
 const Header = () => {
   const route = all_routes;
   const [toggle, SetToggle] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-
+  const { user } = useAuth();
   const isElementVisible = (element) => {
     return element.offsetWidth > 0 || element.offsetHeight > 0;
   };
@@ -34,14 +35,14 @@ const Header = () => {
     return () => {
       document.removeEventListener("mouseover", handleMouseover);
     };
-  }, []); 
+  }, []);
   useEffect(() => {
     const handleFullscreenChange = () => {
       setIsFullscreen(
         document.fullscreenElement ||
-          document.mozFullScreenElement ||
-          document.webkitFullscreenElement ||
-          document.msFullscreenElement
+        document.mozFullScreenElement ||
+        document.webkitFullscreenElement ||
+        document.msFullscreenElement
       );
     };
 
@@ -148,8 +149,8 @@ const Header = () => {
                 pathname.includes("tasks") || pathname.includes("pos")
                   ? "none"
                   : pathname.includes("compose")
-                  ? "none"
-                  : "",
+                    ? "none"
+                    : "",
             }}
             onClick={handlesidebar}
           >
@@ -583,7 +584,7 @@ const Header = () => {
                   />
                 </span>
                 <span className="user-detail">
-                  <span className="user-name">John Smilga</span>
+                  <span className="user-name">{user?.email}</span>
                   <span className="user-role">Super Admin</span>
                 </span>
               </span>

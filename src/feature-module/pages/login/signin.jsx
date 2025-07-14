@@ -1,21 +1,49 @@
 import React, { useState } from "react";
 import ImageWithBasePath from "../../../core/img/imagewithbasebath";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { all_routes } from "../../../Router/all_routes";
+import { loginUser } from "../../../services/authService";
+import { useAuth } from "../../../context/AuthContext";
 
 const Signin = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isPasswordVisible, setPasswordVisible] = useState(false);
-
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const { login } = useAuth();
   const togglePasswordVisibility = () => {
     setPasswordVisible((prevState) => !prevState);
   };
   const route = all_routes;
+
+  const handleLogin = async (e) => {
+    e.preventDefault(); // prevent page refresh
+    setError("");
+
+    try {
+      const response = await loginUser({ userName: email, password });
+      const data = response.Data;
+
+      // Save token in localStorage
+      localStorage.setItem("token", data.AccessToken);
+
+      // Pass the whole user data including token to login()
+      login(data);
+
+      navigate(route.dashboard);
+    } catch (err) {
+      setError(err.message);
+    }
+
+  };
+
   return (
     <div className="main-wrapper">
       <div className="account-content">
         <div className="login-wrapper bg-img">
           <div className="login-content">
-            <form action="index">
+            <form onSubmit={handleLogin}>
               <div className="login-userset">
                 <div className="login-logo logo-normal">
                   <ImageWithBasePath src="assets/img/logo.png" alt="img" />
@@ -32,7 +60,13 @@ const Signin = () => {
                 <div className="form-login mb-3">
                   <label className="form-label">Email Address</label>
                   <div className="form-addons">
-                    <input type="text" className="form- control" />
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                    />
                     <ImageWithBasePath
                       src="assets/img/icons/mail.svg"
                       alt="img"
@@ -45,11 +79,13 @@ const Signin = () => {
                     <input
                       type={isPasswordVisible ? "text" : "password"}
                       className="pass-input form-control"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
                     />
                     <span
-                      className={`fas toggle-password ${
-                        isPasswordVisible ? "fa-eye" : "fa-eye-slash"
-                      }`}
+                      className={`fas toggle-password ${isPasswordVisible ? "fa-eye" : "fa-eye-slash"
+                        }`}
                       onClick={togglePasswordVisibility}
                     ></span>
                   </div>
@@ -72,10 +108,11 @@ const Signin = () => {
                     </div>
                   </div>
                 </div>
+                {error && <p style={{ color: "red", marginBottom: "10px" }}>{error}</p>}
                 <div className="form-login">
-                  <Link to={route.dashboard} className="btn btn-login">
+                  <button type="submit" className="btn btn-login">
                     Sign In
-                  </Link>
+                  </button>
                 </div>
                 <div className="signinform">
                   <h4>
@@ -122,6 +159,12 @@ const Signin = () => {
                 </div>
               </div>
             </form>
+          </div>
+          <div className="login-img">
+            <ImageWithBasePath
+              src="assets/img/authentication/login02.png"
+              alt="img"
+            />
           </div>
         </div>
       </div>

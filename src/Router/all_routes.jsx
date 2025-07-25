@@ -225,4 +225,12 @@ export const all_routes = {
   productCategory: "/product-category",
   productType: "/product-type",
   products: "/products",
+  purchaseOrder: "/purchase-order",
+  purchaseOrderLine: "/purchase-order-line",
+  submittedPurchaseOrder: "/sub-purchase-order",
+  submittedPurchaseOrderLine: "/sub-purchase-order-line",
+  stockReq: "/stock-req",
+  stockReqLine: "/stock-req-line",
+  menuList:"/menu-list",
+  menuItem:"/menu-items"
 };

@@ -4,8 +4,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { all_routes } from "../../../Router/all_routes";
 import { loginUser } from "../../../services/authService";
 import { useAuth } from "../../../context/AuthContext";
+import { useDispatch } from 'react-redux';
+import { getAllDebtors } from "../../../services/debtors/debtors";
+
 
 const Signin = () => {
+  const dispatch = useDispatch();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setPasswordVisible] = useState(false);
@@ -30,12 +35,20 @@ const Signin = () => {
 
       // Pass the whole user data including token to login()
       login(data);
-
+      await fetchDebtors();
       navigate(route.dashboard);
     } catch (err) {
       setError(err.message);
     }
+  };
 
+  const fetchDebtors = async () => {
+    try {
+      const result = await getAllDebtors();
+      dispatch({ type: 'Debtors_Data', payload: result });
+    } catch (err) {
+      console.error('Error fetching debtors:', err.message);
+    }
   };
 
   return (

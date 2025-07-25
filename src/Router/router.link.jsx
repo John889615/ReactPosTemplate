@@ -118,9 +118,9 @@ import BankSetting from "../feature-module/settings/financialsettings/banksettin
 import Customers from "../feature-module/people/customers";
 import Suppliers from "../feature-module/people/suppliers";
 import StoreList from "../core/modals/peoples/storelist";
-import Managestock from "../feature-module/stock/managestock";
-import StockAdjustment from "../feature-module/stock/stockAdjustment";
-import StockTransfer from "../feature-module/stock/stockTransfer";
+// import Managestock from "../feature-module/stock/managestock";
+// import StockAdjustment from "../feature-module/stock/stockAdjustment";
+// import StockTransfer from "../feature-module/stock/stockTransfer";
 import SalesReport from "../feature-module/Reports/salesreport";
 import PurchaseReport from "../feature-module/Reports/purchasereport";
 import InventoryReport from "../feature-module/Reports/inventoryreport";
@@ -146,8 +146,8 @@ import Pos from "../feature-module/sales/pos";
 import AttendanceAdmin from "../feature-module/hrm/attendanceadmin";
 import Payslip from "../feature-module/hrm/payslip";
 import Holidays from "../feature-module/hrm/holidays";
-import SalesList from "../feature-module/sales/saleslist";
-import InvoiceReport from "../feature-module/sales/invoicereport";
+// import SalesList from "../feature-module/sales/saleslist";
+// import InvoiceReport from "../feature-module/sales/invoicereport";
 import SalesReturn from "../feature-module/sales/salesreturn";
 import QuotationList from "../feature-module/sales/quotationlist";
 import Notes from "../feature-module/Application/notes";
@@ -230,6 +230,14 @@ import UnitPage from "../feature-module/Products/units";
 import ProductCategory from "../feature-module/Products/productCategory";
 import ProductType from "../feature-module/Products/productType";
 import ProductPage from "../feature-module/Products/product";
+import PurchaseOrderPage from "../feature-module/stock/purchaseOrder";
+import PurchaseOrderLinePage from "../feature-module/stock/purchaseOrderLine";
+import PurchaseOrderSubmittedPage from "../feature-module/stock/purchaseOrderSubmitted";
+import PurchaseOrderSubmittedLinePage from "../feature-module/stock/purchaseOrderSubmittedLine";
+import StockRequestPage from "../feature-module/stock/stockRequest";
+import StockRequestLinePage from "../feature-module/stock/stockRequestLine";
+import MenuPage from "../feature-module/menu/menu";
+import MenuItemPage from "../feature-module/menu/menuItem";
 
 
 export const publicRoutes = [
@@ -1125,23 +1133,23 @@ export const publicRoutes = [
   },
   {
     id: 87,
-    path: routes.managestock,
-    name: "managestock",
-    element: <Managestock />,
+    path: routes.purchaseOrder,
+    name: "purchaseorder",
+    element: <PurchaseOrderPage />,
     route: Route,
   },
   {
     id: 88,
-    path: routes.stockadjustment,
-    name: "stockadjustment",
-    element: <StockAdjustment />,
+    path: routes.purchaseOrderLine,
+    name: "purchaseOrderLine",
+    element: <PurchaseOrderLinePage />,
     route: Route,
   },
   {
     id: 89,
-    path: routes.stocktransfer,
-    name: "stocktransfer",
-    element: <StockTransfer />,
+    path: routes.submittedPurchaseOrder,
+    name: "subpurchaseorder",
+    element: <PurchaseOrderSubmittedPage />,
     route: Route,
   },
   {
@@ -1328,16 +1336,16 @@ export const publicRoutes = [
   },
   {
     id: 102,
-    path: routes.saleslist,
-    name: "saleslist",
-    element: <SalesList />,
+    path: routes.menuList,
+    name: "menuList",
+    element: <MenuPage />,
     route: Route,
   },
   {
     id: 102,
-    path: routes.invoicereport,
-    name: "invoicereport",
-    element: <InvoiceReport />,
+    path: routes.menuItem,
+    name: "menuItem",
+    element: <MenuItemPage />,
     route: Route,
   },
   {
@@ -1681,6 +1689,27 @@ export const publicRoutes = [
     path: routes.products,
     name: "products",
     element: <ProductPage />,
+    route: Route,
+  },
+  {
+    id: 145,
+    path: routes.submittedPurchaseOrderLine,
+    name: "subpurchaseorderline",
+    element: <PurchaseOrderSubmittedLinePage />,
+    route: Route,
+  },
+  {
+    id: 146,
+    path: routes.stockReq,
+    name: "stockReq",
+    element: <StockRequestPage />,
+    route: Route,
+  },
+  {
+    id: 147,
+    path: routes.stockReqLine,
+    name: "stockReqLine",
+    element: <StockRequestLinePage />,
     route: Route,
   },
 ];

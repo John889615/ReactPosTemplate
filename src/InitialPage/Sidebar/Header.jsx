@@ -5,17 +5,41 @@ import ImageWithBasePath from "../../core/img/imagewithbasebath";
 import { Search, Settings, User, XCircle } from "react-feather";
 import { all_routes } from "../../Router/all_routes";
 import { useAuth } from "../../context/AuthContext";
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllDebtors } from "../../services/debtors/debtors";
+
 
 const Header = () => {
+  const dispatch = useDispatch();
   const route = all_routes;
   const [toggle, SetToggle] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const { user } = useAuth();
+  const debtors = useSelector((state) => state.debtors_data);
+
+  const handleStoreChange = (e) => {
+    const selectedId = e.target.value;
+    dispatch({ type: 'SelectedDebtorStore', payload: selectedId });
+  };
+
   const isElementVisible = (element) => {
     return element.offsetWidth > 0 || element.offsetHeight > 0;
   };
 
   useEffect(() => {
+    const fetchDebtors = async () => {
+      try {
+        const data = await getAllDebtors();
+        dispatch({ type: 'Debtors_Data', payload: data });
+      } catch (error) {
+        console.error('Failed to fetch debtors:', error);
+      }
+    };
+
+    if (!debtors || debtors.length === 0) {
+      fetchDebtors();
+    }
+
     const handleMouseover = (e) => {
       e.stopPropagation();
 
@@ -35,7 +59,8 @@ const Header = () => {
     return () => {
       document.removeEventListener("mouseover", handleMouseover);
     };
-  }, []);
+  }, [debtors, dispatch]);
+
   useEffect(() => {
     const handleFullscreenChange = () => {
       setIsFullscreen(
@@ -67,6 +92,7 @@ const Header = () => {
       );
     };
   }, []);
+
   const handlesidebar = () => {
     document.body.classList.toggle("mini-sidebar");
     SetToggle((current) => !current);
@@ -276,60 +302,19 @@ const Header = () => {
 
           {/* Select Store */}
           <li className="nav-item dropdown has-arrow main-drop select-store-dropdown">
-            <Link
-              to="#"
-              className="dropdown-toggle nav-link select-store"
-              data-bs-toggle="dropdown"
+            <select
+              id="storeSelect"
+              className="form-select"
+              onChange={handleStoreChange} // you can dispatch here if needed
             >
-              <span className="user-info">
-                <span className="user-letter">
-                  <ImageWithBasePath
-                    src="assets/img/store/store-01.png"
-                    alt="Store Logo"
-                    className="img-fluid"
-                  />
-                </span>
-                <span className="user-detail">
-                  <span className="user-name">Select Store</span>
-                </span>
-              </span>
-            </Link>
-            <div className="dropdown-menu dropdown-menu-right">
-              <Link to="#" className="dropdown-item">
-                <ImageWithBasePath
-                  src="assets/img/store/store-01.png"
-                  alt="Store Logo"
-                  className="img-fluid"
-                />{" "}
-                Grocery Alpha
-              </Link>
-              <Link to="#" className="dropdown-item">
-                <ImageWithBasePath
-                  src="assets/img/store/store-02.png"
-                  alt="Store Logo"
-                  className="img-fluid"
-                />{" "}
-                Grocery Apex
-              </Link>
-              <Link to="#" className="dropdown-item">
-                <ImageWithBasePath
-                  src="assets/img/store/store-03.png"
-                  alt="Store Logo"
-                  className="img-fluid"
-                />{" "}
-                Grocery Bevy
-              </Link>
-              <Link to="#" className="dropdown-item">
-                <ImageWithBasePath
-                  src="assets/img/store/store-04.png"
-                  alt="Store Logo"
-                  className="img-fluid"
-                />{" "}
-                Grocery Eden
-              </Link>
-            </div>
+              <option value="">-- Select Store --</option>
+              {debtors.map((debtor, index) => (
+                <option key={index} value={debtor.DebtorID}>
+                  {debtor.ShortCode} {debtor.Name}
+                </option>
+              ))}
+            </select>
           </li>
-          {/* /Select Store */}
 
           {/* Flag */}
           <li className="nav-item dropdown has-arrow flag-nav nav-item-box">

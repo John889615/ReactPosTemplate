@@ -5,7 +5,7 @@ export const getAllMenu = async () => {
     try {
         const response = await api.post('/Menu/list/menus');
         if (response.data && Array.isArray(response.data.Data)) {
-            return response.data.Data;  
+            return response.data.Data;
         } else {
             throw new Error("Unexpected response format");
         }
@@ -36,5 +36,23 @@ export const updateMenu = async (data) => {
         return response.data;
     } catch (error) {
         return error.response.data;
+    }
+};
+
+
+export const getMenuTree = async (menuId) => {
+    try {
+        const response = await api.post('/Menu/list/menu/tree', { MenuID: menuId });
+        console.log("tree res:" , response);
+        if (response.data.Success) {
+            return response.data.Data;
+        } else {
+            throw new Error("Unexpected response format");
+        }
+    } catch (error) {
+        if (error.response) {
+            // You can use a toast or console.log here for user-friendly error reporting
+        }
+        throw new Error('Failed to fetch users. Please try again.');
     }
 };

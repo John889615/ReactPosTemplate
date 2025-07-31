@@ -59,7 +59,12 @@ const MenuItemPage = () => {
                 await updateMenuItem(data);
             }
             else {
-                await newMenuItem(data);
+                const response = await newMenuItem(data);
+                if (!response.Success) {
+                    console.warn("API Error:", response.Messages?.[0] || "Unknown error");
+                    alert(response.Messages?.[0] || "Something went wrong.");
+                    return;
+                }
             }
             setListData([]);
             const list = await getAllMenuItem(selectedMenu);

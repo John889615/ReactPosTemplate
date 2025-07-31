@@ -47,6 +47,337 @@ export const SidebarData = [
       },
     ],
   },
+
+  {
+    label: "User Management",
+    submenuOpen: true,
+    showSubRoute: false,
+    submenuHdr: "User Management",
+    submenuItems: [
+      {
+        label: "Users",
+        link: "/users",
+        icon: <Icon.UserCheck />,
+        showSubRoute: false,
+      },
+      {
+        label: "Roles & Permissions",
+        link: "/roles-permissions",
+        icon: <Icon.UserCheck />,
+        showSubRoute: false,
+      },
+      {
+        label: "Delete Account Request",
+        link: "/delete-account",
+        icon: <Icon.Lock />,
+        showSubRoute: false,
+      },
+    ],
+  },
+  {
+    label: "Menu",
+    submenuOpen: true,
+    submenuHdr: "menu",
+    submenu: false,
+    showSubRoute: false,
+    submenuItems: [
+      {
+        label: "Menus",
+        link: "/menu-list",
+        icon: <Icon.ShoppingCart />,
+        showSubRoute: false,
+        submenu: false,
+      },
+      {
+        label: "Menu Items",
+        link: "/menu-items",
+        icon: <Icon.FileText />,
+        showSubRoute: false,
+        submenu: false,
+      },
+      {
+        label: "Menu Item Products",
+        link: "/menu-item-prod",
+        icon: <Icon.Copy />,
+        showSubRoute: false,
+        submenu: false,
+      },
+    ],
+  },
+
+  {
+    label: "Purchases",
+    submenuOpen: true,
+    submenuHdr: "Purchases",
+    showSubRoute: false,
+    submenuItems: [
+      {
+        label: "Purchases",
+        link: "/purchase-list",
+        icon: <Icon.ShoppingBag />,
+        showSubRoute: false,
+        submenu: false,
+      },
+      {
+        label: "Purchase Order",
+        link: "/purchase-order-report",
+        icon: <Icon.FileMinus />,
+        showSubRoute: false,
+        submenu: false,
+      },
+      {
+        label: "Purchase Return",
+        link: "/purchase-returns",
+        icon: <Icon.RefreshCw />,
+        showSubRoute: false,
+        submenu: false,
+      },
+    ],
+  },
+  {
+    label: "Inventory",
+    submenuOpen: true,
+    showSubRoute: false,
+    submenuHdr: "Iventory",
+    submenuItems: [
+      {
+        label: "Products",
+        link: "/products",
+        icon: <Icon.Package />,
+        showSubRoute: false,
+      },
+      {
+        label: "Product Category",
+        link: "/product-category",
+        icon: <Icon.Folder />,
+        showSubRoute: false,
+      },
+      {
+        label: "Product Type",
+        link: "/product-type",
+        icon: <Icon.Layers />,
+        showSubRoute: false,
+      },
+      {
+        label: "Units",
+        link: "/product-units",
+        icon: <Icon.Hash />,
+        showSubRoute: false,
+      },
+    ],
+  },
+  {
+    label: "Stock",
+    submenuOpen: true,
+    submenuHdr: "Stock",
+    submenu: true,
+    showSubRoute: false,
+    submenuItems: [
+      {
+        label: "Purchase Order",
+        link: "/purchase-order",
+        icon: <Icon.Package />,
+        showSubRoute: false,
+        submenu: false,
+      },
+      {
+        label: "Purchase Order Line",
+        link: "/purchase-order-line",
+        icon: <Icon.Clipboard />,
+        showSubRoute: false,
+        submenu: false,
+      },
+      {
+        label: "Submitted Purchase Order",
+        link: "/sub-purchase-order",
+        icon: <Icon.Truck />,
+        showSubRoute: false,
+        submenu: false,
+      },
+      {
+        label: "Sub. Purchase Order Line",
+        link: "/sub-purchase-order-line",
+        icon: <Icon.TrendingDown />,
+        showSubRoute: false,
+        submenu: false,
+      },
+      {
+        label: "Stock Request",
+        link: "/stock-req",
+        icon: <Icon.Layers />,
+        showSubRoute: false,
+        submenu: false,
+      },
+      {
+        label: "Stock Request Line",
+        link: "/stock-req-line",
+        icon: <Icon.AlignJustify />,
+        showSubRoute: false,
+        submenu: false,
+      },
+    ],
+  },
+  {
+    label: "Debtor",
+    submenuOpen: true,
+    showSubRoute: false,
+    submenuHdr: "Debtor",
+    submenuItems: [
+      {
+        label: "Debtor",
+        link: "/debtors",
+        icon: <Icon.Tag />,
+        showSubRoute: false,
+      },
+      {
+        label: "Cost Center",
+        link: "/cost-center",
+        icon: <Icon.Globe />,
+        showSubRoute: false,
+      },
+    ],
+  },
+  {
+    label: "Creditor",
+    submenuOpen: true,
+    showSubRoute: false,
+    submenuHdr: "Creditor",
+    submenuItems: [
+      {
+        label: "Creditor",
+        link: "/creditor",
+        icon: <Icon.Tag />,
+        showSubRoute: false,
+      },
+    ],
+  },
+
+  {
+    label: "Entity Data",
+    submenuOpen: true,
+    showSubRoute: false,
+    submenuHdr: "Entity Data",
+    submenuItems: [
+      {
+        label: "Address",
+        link: "/entity-data-address",
+        icon: <Icon.MapPin />,
+        showSubRoute: false,
+      },
+      {
+        label: "Address Region",
+        link: "/entity-data-address-region",
+        icon: <Icon.Globe />,
+        showSubRoute: false,
+      },
+      {
+        label: "Address Type",
+        link: "/entity-data-address-type",
+        icon: <Icon.Tag />,
+        showSubRoute: false,
+      },
+      {
+        label: "Contact",
+        link: "/entity-data-contact",
+        icon: <Icon.Phone />,
+        showSubRoute: false,
+      },
+      {
+        label: "Contact Type",
+        link: "/entity-data-contact-type",
+        icon: <Icon.BookOpen />,
+        showSubRoute: false,
+      },
+      {
+        label: "Continents",
+        link: "/entity-data-continent",
+        icon: <Icon.Globe />,
+        showSubRoute: false,
+      },
+
+      {
+        label: "Countries",
+        link: "/countries",
+        icon: <Icon.Flag />,
+        showSubRoute: false,
+      },
+
+      {
+        label: "Country Province",
+        link: "/country-province",
+        icon: <Icon.Map />,
+        showSubRoute: false,
+      },
+
+      {
+        label: "Country Region",
+        link: "/country-region",
+        icon: <Icon.MapPin />,
+        showSubRoute: false,
+      },
+
+      {
+        label: "Country Subregion",
+        link: "/country-sub-region",
+        icon: <Icon.Map />,
+        showSubRoute: false,
+      },
+
+      {
+        label: "Currency",
+        link: "/currencies",
+        icon: <Icon.DollarSign />,
+        showSubRoute: false,
+      },
+      {
+        label: "Dialing Code",
+        link: "/dialing-code",
+        icon: <Icon.PhoneCall />,
+        showSubRoute: false,
+      },
+      {
+        label: "Entities",
+        link: "/entities",
+        icon: <Icon.User />,
+        showSubRoute: false,
+      },
+      {
+        label: "Entity Address",
+        link: "/entity-address",
+        icon: <Icon.Home />,
+        showSubRoute: false,
+      },
+
+      {
+        label: "Entity Contact",
+        link: "/entity-contact",
+        icon: <Icon.Phone />,
+        showSubRoute: false,
+      },
+
+      {
+        label: "Status",
+        link: "/status",
+        icon: <Icon.ToggleLeft />,
+        showSubRoute: false,
+      },
+
+      {
+        label: "Status Group",
+        link: "/status-group",
+        icon: <Icon.ToggleRight />,
+        showSubRoute: false,
+      },
+
+      {
+        label: "Time zone",
+        link: "/time-zone",
+        icon: <Icon.Clock />,
+        showSubRoute: false,
+      },
+    ],
+  },
+
   {
     label: "Inventory",
     submenuOpen: true,
@@ -134,131 +465,6 @@ export const SidebarData = [
         label: "Print QR Code",
         link: "/qrcode",
         icon: <Icon.Maximize />,
-        showSubRoute: false,
-        submenu: false,
-      },
-    ],
-  },
-  {
-    label: "Stock",
-    submenuOpen: true,
-    submenuHdr: "Stock",
-    submenu: true,
-    showSubRoute: false,
-    submenuItems: [
-      {
-        label: "Purchase Order",
-        link: "/purchase-order",
-        icon: <Icon.Package />,
-        showSubRoute: false,
-        submenu: false,
-      },
-      {
-        label: "Purchase Order Line",
-        link: "/purchase-order-line",
-        icon: <Icon.Clipboard />,
-        showSubRoute: false,
-        submenu: false,
-      },
-      {
-        label: "Submitted Purchase Order",
-        link: "/sub-purchase-order",
-        icon: <Icon.Truck />,
-        showSubRoute: false,
-        submenu: false,
-      },
-      {
-        label: "Sub. Purchase Order Line",
-        link: "/sub-purchase-order-line",
-        icon: <Icon.TrendingDown />,
-        showSubRoute: false,
-        submenu: false,
-      },
-      {
-        label: "Stock Request",
-        link: "/stock-req",
-        icon: <Icon.Layers />,
-        showSubRoute: false,
-        submenu: false,
-      },
-      {
-        label: "Stock Request Line",
-        link: "/stock-req-line",
-        icon: <Icon.AlignJustify />,
-        showSubRoute: false,
-        submenu: false,
-      },
-    ],
-  },
-  {
-    label: "Menu",
-    submenuOpen: true,
-    submenuHdr: "menu",
-    submenu: false,
-    showSubRoute: false,
-    submenuItems: [
-      {
-        label: "Menus",
-        link: "/menu-list",
-        icon: <Icon.ShoppingCart />,
-        showSubRoute: false,
-        submenu: false,
-      },
-      {
-        label: "Menu Items",
-        link: "/menu-items",
-        icon: <Icon.FileText />,
-        showSubRoute: false,
-        submenu: false,
-      },
-      {
-        label: "Sales Return",
-        link: "/sales-returns",
-        icon: <Icon.Copy />,
-        showSubRoute: false,
-        submenu: false,
-      },
-      {
-        label: "Quotation",
-        link: "/quotation-list",
-        icon: <Icon.Save />,
-        showSubRoute: false,
-        submenu: false,
-      },
-      {
-        label: "POS",
-        link: "/pos",
-        icon: <Icon.HardDrive />,
-        showSubRoute: false,
-        submenu: false,
-      },
-    ],
-  },
-  
-  {
-    label: "Purchases",
-    submenuOpen: true,
-    submenuHdr: "Purchases",
-    showSubRoute: false,
-    submenuItems: [
-      {
-        label: "Purchases",
-        link: "/purchase-list",
-        icon: <Icon.ShoppingBag />,
-        showSubRoute: false,
-        submenu: false,
-      },
-      {
-        label: "Purchase Order",
-        link: "/purchase-order-report",
-        icon: <Icon.FileMinus />,
-        showSubRoute: false,
-        submenu: false,
-      },
-      {
-        label: "Purchase Return",
-        link: "/purchase-returns",
-        icon: <Icon.RefreshCw />,
         showSubRoute: false,
         submenu: false,
       },
@@ -470,223 +676,7 @@ export const SidebarData = [
     ],
   },
 
-  {
-    label: "User Management",
-    submenuOpen: true,
-    showSubRoute: false,
-    submenuHdr: "User Management",
-    submenuItems: [
-      {
-        label: "Users",
-        link: "/users",
-        icon: <Icon.UserCheck />,
-        showSubRoute: false,
-      },
-      {
-        label: "Roles & Permissions",
-        link: "/roles-permissions",
-        icon: <Icon.UserCheck />,
-        showSubRoute: false,
-      },
-      {
-        label: "Delete Account Request",
-        link: "/delete-account",
-        icon: <Icon.Lock />,
-        showSubRoute: false,
-      },
-    ],
-  },
-  {
-    label: "Debtor",
-    submenuOpen: true,
-    showSubRoute: false,
-    submenuHdr: "Debtor",
-    submenuItems: [
-      {
-        label: "Debtor",
-        link: "/debtors",
-        icon: <Icon.Tag />,
-        showSubRoute: false,
-      },
-      {
-        label: "Cost Center",
-        link: "/cost-center",
-        icon: <Icon.Globe />,
-        showSubRoute: false,
-      },
-    ],
-  },
-  {
-    label: "Creditor",
-    submenuOpen: true,
-    showSubRoute: false,
-    submenuHdr: "Creditor",
-    submenuItems: [
-      {
-        label: "Creditor",
-        link: "/creditor",
-        icon: <Icon.Tag />,
-        showSubRoute: false,
-      },
-    ],
-  },
-  {
-    label: "Inventory",
-    submenuOpen: true,
-    showSubRoute: false,
-    submenuHdr: "Iventory",
-    submenuItems: [
-      {
-        label: "Products",
-        link: "/products",
-        icon: <Icon.Package />,
-        showSubRoute: false,
-      },
-      {
-        label: "Product Category",
-        link: "/product-category",
-        icon: <Icon.Folder />,
-        showSubRoute: false,
-      },
-      {
-        label: "Product Type",
-        link: "/product-type",
-        icon: <Icon.Layers />,
-        showSubRoute: false,
-      },
-      {
-        label: "Units",
-        link: "/product-units",
-        icon: <Icon.Hash />,
-        showSubRoute: false,
-      },
-    ],
-  },
-  {
-    label: "Entity Data",
-    submenuOpen: true,
-    showSubRoute: false,
-    submenuHdr: "Entity Data",
-    submenuItems: [
-      {
-        label: "Address",
-        link: "/entity-data-address",
-        icon: <Icon.MapPin />,
-        showSubRoute: false,
-      },
-      {
-        label: "Address Region",
-        link: "/entity-data-address-region",
-        icon: <Icon.Globe />,
-        showSubRoute: false,
-      },
-      {
-        label: "Address Type",
-        link: "/entity-data-address-type",
-        icon: <Icon.Tag />,
-        showSubRoute: false,
-      },
-      {
-        label: "Contact",
-        link: "/entity-data-contact",
-        icon: <Icon.Phone />,
-        showSubRoute: false,
-      },
-      {
-        label: "Contact Type",
-        link: "/entity-data-contact-type",
-        icon: <Icon.BookOpen />,
-        showSubRoute: false,
-      },
-      {
-        label: "Continents",
-        link: "/entity-data-continent",
-        icon: <Icon.Globe />,
-        showSubRoute: false,
-      },
 
-      {
-        label: "Countries",
-        link: "/countries",
-        icon: <Icon.Flag />,
-        showSubRoute: false,
-      },
-
-      {
-        label: "Country Province",
-        link: "/country-province",
-        icon: <Icon.Map />,
-        showSubRoute: false,
-      },
-
-      {
-        label: "Country Region",
-        link: "/country-region",
-        icon: <Icon.MapPin />,
-        showSubRoute: false,
-      },
-
-      {
-        label: "Country Subregion",
-        link: "/country-sub-region",
-        icon: <Icon.Map />,
-        showSubRoute: false,
-      },
-
-      {
-        label: "Currency",
-        link: "/currencies",
-        icon: <Icon.DollarSign />,
-        showSubRoute: false,
-      },
-      {
-        label: "Dialing Code",
-        link: "/dialing-code",
-        icon: <Icon.PhoneCall />,
-        showSubRoute: false,
-      },
-      {
-        label: "Entities",
-        link: "/entities",
-        icon: <Icon.User />,
-        showSubRoute: false,
-      },
-      {
-        label: "Entity Address",
-        link: "/entity-address",
-        icon: <Icon.Home />,
-        showSubRoute: false,
-      },
-
-      {
-        label: "Entity Contact",
-        link: "/entity-contact",
-        icon: <Icon.Phone />,
-        showSubRoute: false,
-      },
-
-      {
-        label: "Status",
-        link: "/status",
-        icon: <Icon.ToggleLeft />,
-        showSubRoute: false,
-      },
-
-      {
-        label: "Status Group",
-        link: "/status-group",
-        icon: <Icon.ToggleRight />,
-        showSubRoute: false,
-      },
-
-      {
-        label: "Time zone",
-        link: "/time-zone",
-        icon: <Icon.Clock />,
-        showSubRoute: false,
-      },
-    ],
-  },
   {
     label: "Pages",
     submenuOpen: true,

@@ -12,7 +12,7 @@ import Swal from "sweetalert2";
 import Table from "../../core/pagination/datatable";
 
 const DeleteAccount = () => {
-  const dispatch = useDispatch();asdasdasdasd
+  const dispatch = useDispatch();
   const data = useSelector((state) => state.toggle_header);
   const dataSource = useSelector((state) => state.deleteaccount_data);
   const renderTooltip = (props) => (

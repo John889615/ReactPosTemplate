@@ -232,5 +232,7 @@ export const all_routes = {
   stockReq: "/stock-req",
   stockReqLine: "/stock-req-line",
   menuList:"/menu-list",
-  menuItem:"/menu-items"
+  menuItem:"/menu-items",
+  menuItemProduct:"/menu-item-prod",
+  menutree:"/menu-tree/:id"
 };

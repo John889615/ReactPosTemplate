@@ -8,14 +8,14 @@ import {
     PlusCircle,
 } from "react-feather";
 import MenuForm from "../../core/modals/menu/menuFormModel";
-
-
+import { useNavigate } from 'react-router-dom';
 
 const MenuPage = () => {
     const [listData, setListData] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [showModel, setModelShow] = useState(false);
     const [selectedData, setSelectedData] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchRecords();
@@ -63,6 +63,11 @@ const MenuPage = () => {
     const handleEditProduct = (record) => {
         setSelectedData(record);
         setModelShow(true);
+    };
+
+
+    const handleMenuClick = (menuId) => {
+        navigate(`/menu-tree/${menuId}`);
     };
 
     return (
@@ -113,7 +118,12 @@ const MenuPage = () => {
                                     {filteredData.length > 0 ? (
                                         filteredData.map((item, index) => (
                                             <tr key={index}>
-                                                <td>{item.MenuName || "N/A"}</td>
+                                                <td
+                                                    style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                                                    onClick={() => handleMenuClick(item.POS_MenuID)}
+                                                >
+                                                    {item.MenuName || "N/A"}
+                                                </td>
                                                 <td>{item.IsActive ? "Yes" : "No"}</td>
                                                 <td>
                                                     <button type='button'

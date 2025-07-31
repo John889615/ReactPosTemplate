@@ -145,7 +145,7 @@ import StorageSettings from "../feature-module/settings/othersettings/storageset
 import Pos from "../feature-module/sales/pos";
 import AttendanceAdmin from "../feature-module/hrm/attendanceadmin";
 import Payslip from "../feature-module/hrm/payslip";
-import Holidays from "../feature-module/hrm/holidays";
+// import Holidays from "../feature-module/hrm/holidays";
 // import SalesList from "../feature-module/sales/saleslist";
 // import InvoiceReport from "../feature-module/sales/invoicereport";
 import SalesReturn from "../feature-module/sales/salesreturn";
@@ -238,6 +238,8 @@ import StockRequestPage from "../feature-module/stock/stockRequest";
 import StockRequestLinePage from "../feature-module/stock/stockRequestLine";
 import MenuPage from "../feature-module/menu/menu";
 import MenuItemPage from "../feature-module/menu/menuItem";
+import MenuItemProductPage from "../feature-module/menu/menuItemProduct";
+import MenuTreeBuilder from "../feature-module/menu/menuTreeBuilder";
 
 
 export const publicRoutes = [
@@ -1350,9 +1352,16 @@ export const publicRoutes = [
   },
   {
     id: 102,
-    path: routes.holidays,
-    name: "holidays",
-    element: <Holidays />,
+    path: routes.menuItemProduct,
+    name: "menuProduct",
+    element: <MenuItemProductPage />,
+    route: Route,
+  },
+  {
+    id: 102,
+    path: routes.menutree,
+    name: "menuTree",
+    element: <MenuTreeBuilder />,
     route: Route,
   },
   {

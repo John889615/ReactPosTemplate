@@ -54,7 +54,7 @@ const MenuItemForm = ({
                                 <input name="Item" required type="text" defaultValue={data?.Item} className="form-control" />
                             </div>
                         </div>
-                        <div className="col-lg-6">
+                        <div className="col-lg-12">
                             <div className="input-blocks">
                                 <label>Parent Menu Item</label>
                                 <select name="FK_POS_MenuItemID" className="form-select" defaultValue={data?.FK_ParentMenuItemID || ''}>

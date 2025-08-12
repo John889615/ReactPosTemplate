@@ -234,5 +234,6 @@ export const all_routes = {
   menuList:"/menu-list",
   menuItem:"/menu-items",
   menuItemProduct:"/menu-item-prod",
-  menutree:"/menu-tree/:id"
+  menutree:"/menu-tree/:id",
+  placeorder: "/place-order",
 };

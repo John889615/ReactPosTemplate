@@ -75,6 +75,22 @@ export const SidebarData = [
     ],
   },
   {
+    label: "Order Management",
+    submenuOpen: true,
+    submenuHdr: "Order Management",
+    submenu: false,
+    showSubRoute: false,
+    submenuItems: [
+      {
+        label: "Place Order",
+        link: "/place-order",
+        icon: <Icon.ShoppingCart />,
+        showSubRoute: false,
+        submenu: false,
+      }
+    ],
+  },
+  {
     label: "Menu",
     submenuOpen: true,
     submenuHdr: "menu",

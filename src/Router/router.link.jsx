@@ -240,7 +240,7 @@ import MenuPage from "../feature-module/menu/menu";
 import MenuItemPage from "../feature-module/menu/menuItem";
 import MenuItemProductPage from "../feature-module/menu/menuItemProduct";
 import MenuTreeBuilder from "../feature-module/menu/menuTreeBuilder";
-
+import OrderPlacePage from "../feature-module/order/orderPlace";
 
 export const publicRoutes = [
   {
@@ -1719,6 +1719,13 @@ export const publicRoutes = [
     path: routes.stockReqLine,
     name: "stockReqLine",
     element: <StockRequestLinePage />,
+    route: Route,
+  },
+  {
+    id: 148,
+    path: routes.placeorder,
+    name: "placeorder ",
+    element: <OrderPlacePage />,
     route: Route,
   },
 ];

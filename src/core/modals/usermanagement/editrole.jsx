@@ -1,60 +1,81 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useRef } from 'react';
+import { Modal } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
-const EditRole = () => {
+const EditRole = ({ show, onHide, roleData, onSave }) => {
+    const formRef = useRef(null);
+    useEffect(() => {
+
+    }, [roleData]);
+
+
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const form = e.target;
+
+
+        const userData = {
+            // collect values from inputs here
+            RoleID: roleData?.ApplicationTenantRoleID,
+            Role: form.Role.value.trim(),
+            Description: form.Description.value.trim(),
+        };
+
+        if (onSave) {
+            onSave(userData);
+        }
+    };
+
+
     return (
-        <div>
-            {/* Edit Role */}
-            <div className="modal fade" id="edit-units">
-                <div className="modal-dialog modal-dialog-centered custom-modal-two">
-                    <div className="modal-content">
-                        <div className="page-wrapper-new p-0">
-                            <div className="content">
-                                <div className="modal-header border-0 custom-modal-header">
-                                    <div className="page-title">
-                                        <h4>Edit Role</h4>
-                                    </div>
-                                    <button
-                                        type="button"
-                                        className="close"
-                                        data-bs-dismiss="modal"
-                                        aria-label="Close"
-                                    >
-                                        <span aria-hidden="true">×</span>
-                                    </button>
-                                </div>
-                                <div className="modal-body custom-modal-body">
-                                    <form>
-                                        <div className="mb-0">
-                                            <label className="form-label">Role Name</label>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                defaultValue="sales Man"
-                                            />
-                                        </div>
-                                        <div className="modal-footer-btn">
-                                            <button
-                                                type="button"
-                                                className="btn btn-cancel me-2"
-                                                data-bs-dismiss="modal"
-                                            >
-                                                Cancel
-                                            </button>
-                                            <Link to="#" className="btn btn-submit">
-                                                Save Changes
-                                            </Link>
-                                        </div>
-                                    </form>
-                                </div>
+        <Modal show={show} onHide={onHide} centered className="custom-modal-two">
+            <form onSubmit={handleSubmit} ref={formRef}>
+                <Modal.Header closeButton className="custom-modal-header border-0">
+                    <Modal.Title>Edit Role</Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body className="custom-modal-body">
+                    <div className='row'>
+                        <div className='col-12'>
+                            <div className="input-blocks">
+                                <label>Role Name</label>
+                                <input name="Role" required type="text" defaultValue={roleData?.Role} className="form-control" />
+                            </div>
+                        </div>
+                        <div className='col-12'>
+                            <div className="input-blocks">
+                                <label>Description</label>
+                                <textarea className="form-control" name="Description" defaultValue={roleData?.Description}></textarea>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            {/* /Edit Role */}
-        </div>
-    )
-}
 
-export default EditRole
+                </Modal.Body>
+
+                <Modal.Footer className="modal-footer-btn">
+                    <button
+                        type="button"
+                        className="btn btn-cancel me-2"
+                        onClick={onHide}
+                    >
+                        Cancel
+                    </button>
+                    <button type="submit" className="btn btn-submit">
+                        Submit
+                    </button>
+                </Modal.Footer>
+            </form>
+        </Modal>
+    );
+};
+
+export default EditRole;
+
+EditRole.propTypes = {
+    roleData: PropTypes.object.isRequired,
+    onSave: PropTypes.func.isRequired,
+    show: PropTypes.bool.isRequired,
+    onHide: PropTypes.func.isRequired,
+};
+

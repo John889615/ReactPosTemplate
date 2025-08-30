@@ -67,6 +67,8 @@ const initialState = {
   subcategory_data: subcateorydata,
   callhistory_data: callhistorydata,
   layoutstyledata: localStorage.getItem("layoutStyling"),
+  debtors_data: [],
+  selectedDebtorStore: null, 
 };
 
 export default initialState;

@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { getAllStatus } from "../../../services/entityData/status";
 import { Link } from "react-router-dom";
+import { Button } from "react-bootstrap";
+
 
 const EntityDataStatus = () => {
     const [addressList, setAddressList] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const recordsPerPage = 10;
+    const maxPageButtons = 5;
 
     useEffect(() => {
         fetchAddresses();
@@ -26,6 +31,22 @@ const EntityDataStatus = () => {
                 value.toLowerCase().includes(searchTerm.toLowerCase())
         )
     );
+
+    const indexOfLastRecord = currentPage * recordsPerPage;
+    const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+    const currentRecords = filteredData.slice(indexOfFirstRecord, indexOfLastRecord);
+    const totalPages = Math.ceil(filteredData.length / recordsPerPage);
+    const goToPage = (page) => {
+        if (page >= 1 && page <= totalPages) {
+            setCurrentPage(page);
+        }
+    };
+
+    let startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
+    let endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
+    if (endPage - startPage + 1 < maxPageButtons) {
+        startPage = Math.max(1, endPage - maxPageButtons + 1);
+    }
 
     return (
         <div className="page-wrapper">
@@ -65,8 +86,8 @@ const EntityDataStatus = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {filteredData.length > 0 ? (
-                                        filteredData.map((item, index) => (
+                                    {currentRecords.length > 0 ? (
+                                        currentRecords.map((item, index) => (
                                             <tr key={index}>
                                                 <td>{item.SystemCode}</td>
                                                 <td>{item.DisplayName}</td>
@@ -81,6 +102,48 @@ const EntityDataStatus = () => {
                                     )}
                                 </tbody>
                             </table>
+                            {totalPages > 1 && (
+                                <div className="d-flex justify-content-between align-items-center mt-3">
+                                    <span>
+                                        Page {currentPage} of {totalPages}
+                                    </span>
+                                    <div>
+                                        {Array.from({ length: endPage - startPage + 1 }, (_, i) => {
+                                            const pageNumber = startPage + i;
+                                            return (
+                                                <Button
+                                                    key={pageNumber}
+                                                    variant={currentPage === pageNumber ? "primary" : "light"}
+                                                    size="sm"
+                                                    className="mx-1"
+                                                    onClick={() => setCurrentPage(pageNumber)}
+                                                >
+                                                    {pageNumber}
+                                                </Button>
+                                            );
+                                        })}
+                                    </div>
+                                    <div>
+                                        <Button
+                                            variant="secondary"
+                                            size="sm"
+                                            disabled={currentPage === 1}
+                                            onClick={() => setCurrentPage(currentPage - 1)}
+                                        >
+                                            Previous
+                                        </Button>
+                                        <Button
+                                            variant="secondary"
+                                            size="sm"
+                                            className="ms-2"
+                                            disabled={currentPage === totalPages}
+                                            onClick={() => setCurrentPage(currentPage + 1)}
+                                        >
+                                            Next
+                                        </Button>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

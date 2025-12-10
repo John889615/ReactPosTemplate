@@ -34,6 +34,7 @@ const ProductForm = ({
             SKU: form.SKU.value.trim(),
             Barcode: form.Barcode.value.trim(),
             QrCode: form.QrCode.value.trim(),
+            ImageFile: form.ImageFile.files[0] || null
         };
 
         if (data?.POS_ProductID) {
@@ -147,6 +148,17 @@ const ProductForm = ({
                             <div className="input-blocks">
                                 <label>QR Code</label>
                                 <input name="QrCode" type="text" className="form-control" defaultValue={data?.QrCode} />
+                            </div>
+                        </div>
+                        <div className="col-lg-12">
+                            <div className="input-blocks">
+                                <label>Product Image</label>
+                                <input
+                                    name="ImageFile"
+                                    type="file"
+                                    accept="image/*"
+                                    className="form-control"
+                                />
                             </div>
                         </div>
                     </div>

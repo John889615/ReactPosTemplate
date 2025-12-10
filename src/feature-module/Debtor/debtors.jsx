@@ -7,6 +7,8 @@ import {
     PlusCircle,
 } from "react-feather";
 import DebtorForm from "../../core/modals/debtors/debtorFormModel";
+import DebtorAddress from "./debtorAddress";
+import DebtorContact from "./debtorContact";
 
 
 
@@ -18,8 +20,10 @@ const Debtors = () => {
     const [statusList, setStatusList] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [showModel, setModelShow] = useState(false);
+    const [showAddressModel, setAddressModelShow] = useState(false);
+    const [showContactModel, setContactModelShow] = useState(false);
     const [selectedDebtor, setSelectedDebtor] = useState(null);
-
+    const [selectedDebtorId, setSelectedDebtorId] = useState(null);
     useEffect(() => {
         fetchRecords();
     }, []);
@@ -28,14 +32,6 @@ const Debtors = () => {
         try {
             const data = await getAllDebtors();
             setListData(data);
-            const dep = await getAllDepartments();
-            setDepartmentList(dep);
-            const branch = await getAllBranches();
-            setBranchList(branch);
-            const type = await getAllDebtorTypes();
-            setDebtorType(type);
-            const status = await getAllStatus();
-            setStatusList(status);
         } catch (err) {
             console.error("Failed to load addresses:", err.message);
         }
@@ -52,7 +48,6 @@ const Debtors = () => {
     const handleShow = () => setModelShow(true);
     const handleClose = () => setModelShow(false);
     const handleAddDebtor = async (data) => {
-        console.log("Debtor Data", data);
         try {
             if (data.DebtorID) {
                 await updateDebtor(data);
@@ -68,10 +63,22 @@ const Debtors = () => {
     };
 
     const handleEditDebtor = (record) => {
-        console.log("User Data", record);
         setSelectedDebtor(record);
         setModelShow(true);
     };
+
+    const handleAddAddress = (debtorId) => {
+        setSelectedDebtorId(debtorId);
+        setAddressModelShow(true);
+    };
+
+    const handleViewContacts = (debtorId) => {
+        setSelectedDebtorId(debtorId);
+        setContactModelShow(true);
+    };
+
+    const handleAddressClose = () => setAddressModelShow(false);
+    const handleContactClose = () => setContactModelShow(false);
 
     return (
         <div className="page-wrapper">
@@ -114,12 +121,7 @@ const Debtors = () => {
                                     <tr>
                                         <th>Short Code</th>
                                         <th>Name</th>
-                                        <th>Master Debtor</th>
-                                        <th>Is Master Debtor</th>
-                                        <th>Debtor Type</th>
-                                        <th>Branch</th>
-                                        <th>Department</th>
-                                        <th>Status</th>
+                                        <th>Is Active</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -129,24 +131,35 @@ const Debtors = () => {
                                             <tr key={index}>
                                                 <td>{item.ShortCode || "N/A"}</td>
                                                 <td>{item.Name || "N/A"}</td>
-                                                <td>{item.MasterDebtor || "N/A"}</td>
-                                                <td>{item.IsMasterDebtor ? "Yes" : "No"}</td>
-                                                <td>{item.DebtorType || "N/A"}</td>
-                                                <td>{item.Branch || "N/A"}</td>
-                                                <td>{item.Department || "N/A"}</td>
-                                                <td>{item.Status || "N/A"}</td>
+                                                <td>{item.IsActive ? 'Yes' : 'No'}</td>
                                                 <td>
                                                     <button type='button'
                                                         onClick={() => handleEditDebtor(item)}
                                                         className="btn btn-sm btn-primary me-2">
                                                         <i className="feather-edit"></i>
                                                     </button>
+                                                    <button
+                                                        type='button'
+                                                        onClick={() => handleAddAddress(item.DebtorID)}
+                                                        className="btn btn-sm btn-info me-2"
+                                                        title="Add Address"
+                                                    >
+                                                        <i className="feather-map-pin"></i>
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleViewContacts(item.DebtorID)}
+                                                        className="btn btn-sm btn-warning"
+                                                        title="View Contacts"
+                                                    >
+                                                        <i className="feather-users"></i>
+                                                    </button>
                                                 </td>
                                             </tr>
                                         ))
                                     ) : (
                                         <tr>
-                                            <td colSpan="8" className="text-center">
+                                            <td colSpan="9" className="text-center">
                                                 No records found
                                             </td>
                                         </tr>
@@ -157,16 +170,31 @@ const Debtors = () => {
                     </div>
                 </div>
             </div>
-            <DebtorForm branchList={branchList}
-                onSubmitDebtor={handleAddDebtor}
-                showModel={showModel}
-                handleClose={handleClose}
-                debtorData={selectedDebtor}
-                debtorTypeList={debtorTypeList}
-                departmentList={departmentList}
-                statusList={statusList}
-                debtorList={listData}
-            />
+            {showModel &&
+                <DebtorForm branchList={branchList}
+                    onSubmitDebtor={handleAddDebtor}
+                    showModel={showModel}
+                    handleClose={handleClose}
+                    debtorData={selectedDebtor}
+                    debtorTypeList={debtorTypeList}
+                    departmentList={departmentList}
+                    statusList={statusList}
+                    debtorList={listData}
+                />
+            }
+            {showAddressModel &&
+                <DebtorAddress
+                    showAddressModel={showAddressModel}
+                    debtorId={selectedDebtorId}
+                    handleAddressClose={handleAddressClose}
+                />}
+
+            {showContactModel &&
+                <DebtorContact
+                    showContactModel={showContactModel}
+                    debtorId={selectedDebtorId}
+                    handleContactClose={handleContactClose}
+                />}
         </div>
     );
 };

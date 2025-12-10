@@ -50,7 +50,6 @@ const CostCenter = () => {
     const handleShow = () => setModelShow(true);
     const handleClose = () => setModelShow(false);
     const handleAddCostCenter = async (data) => {
-        console.log("Data : ", data);
         try {
             if (data.POS_CostCenterID) {
                 await updateCostCenter(data);

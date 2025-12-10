@@ -1,30 +1,53 @@
 import React, { useState, useEffect } from "react";
-import { getAllMenu, newMenu, updateMenu } from "../../services/menu/menuService";
+import { getAllMenu, newMenu, updateMenu, copyMenu } from "../../services/menu/menuService";
+import { getAllDebtors } from "../../services/debtors/debtors";
+import { getAllCostCenter } from "../../services/debtors/costCenter";
 
 
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import {
-    PlusCircle,
-} from "react-feather";
+import { PlusCircle } from "react-feather";
 import MenuForm from "../../core/modals/menu/menuFormModel";
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import CopyMenuForm from "../../core/modals/menu/copyMenuFormModel";
+
 
 const MenuPage = () => {
     const [listData, setListData] = useState([]);
-    const [searchTerm, setSearchTerm] = useState("");
+    const [debtorList, setDebtorList] = useState([]);
+    const [costCenterList, setCostCenterList] = useState([]);
     const [showModel, setModelShow] = useState(false);
     const [selectedData, setSelectedData] = useState(null);
+    const [selectedDebtor, setSelectedDebtor] = useState(0);
+    const debtorId = useSelector((state) => state.selectedDebtorStore);
     const navigate = useNavigate();
+    const [showCopyModel, setCopyModelShow] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const recordsPerPage = 10;
 
     useEffect(() => {
         fetchRecords();
-    }, []);
+        fetchDebtorCostCenter();
+    }, [debtorId]);
 
     const fetchRecords = async () => {
         try {
-            const data = await getAllMenu();
+            setSelectedDebtor(debtorId == null ? 1 : debtorId);
+            const data = await getAllMenu(debtorId == null ? 1 : debtorId);
             setListData(data);
+        } catch (err) {
+            console.error("Failed to load:", err.message);
+        }
+    }
+
+    const fetchDebtorCostCenter = async () => {
+        try {
+            const data = await getAllDebtors();
+            setDebtorList(data);
+            const cost = await getAllCostCenter();
+            setCostCenterList(cost);
         } catch (err) {
             console.error("Failed to load:", err.message);
         }
@@ -38,6 +61,16 @@ const MenuPage = () => {
         )
     );
 
+    const totalPages = Math.ceil(filteredData.length / recordsPerPage);
+    const startIndex = (currentPage - 1) * recordsPerPage;
+    const currentData = filteredData.slice(startIndex, startIndex + recordsPerPage);
+
+    const goToPage = (page) => {
+        if (page >= 1 && page <= totalPages) {
+            setCurrentPage(page);
+        }
+    };
+
     const handleShow = () => {
         setSelectedData(null);
         setModelShow(true)
@@ -45,7 +78,6 @@ const MenuPage = () => {
 
     const handleClose = () => setModelShow(false);
     const handleAddProduct = async (data) => {
-        console.log("Data : ", data);
         try {
             if (data.POS_MenuID) {
                 await updateMenu(data);
@@ -66,9 +98,39 @@ const MenuPage = () => {
     };
 
 
-    const handleMenuClick = (menuId) => {
-        navigate(`/menu-tree/${menuId}`);
+    const handleMenuClick = (menuId, type) => {
+        if (type == "Global") {
+            navigate(`/menu-tree/${menuId}`);
+        }
+        else {
+            navigate(`/menu-tree-camp/${menuId}`);
+        }
     };
+
+    const HandleCopyMenu = (record) => {
+        setSelectedData(record);
+        setCopyModelShow(true);
+    };
+
+    const handleCopyClose = () => setCopyModelShow(false);
+
+    const handleAddCopyMenu = async (data) => {
+        console.log("Data : ", data);
+        debugger;
+        try {
+            var response = await copyMenu(data);
+            debugger;
+            if (response.Success) {
+                setCopyModelShow(false);
+            }
+            else {
+                alert("something wrong!.")
+            }
+        } catch (err) {
+            console.error("Error creating user:", err.message);
+        }
+    };
+
 
     return (
         <div className="page-wrapper">
@@ -89,7 +151,8 @@ const MenuPage = () => {
                 </div>
                 <div className="card table-list-card">
                     <div className="card-body">
-                        <div className="table-top">
+                        <div className="table-top d-flex justify-content-between align-items-center">
+                            {/* Search Input - Left Side */}
                             <div className="search-set">
                                 <div className="search-input">
                                     <input
@@ -99,7 +162,7 @@ const MenuPage = () => {
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                     />
-                                    <Link to className="btn btn-searchset">
+                                    <Link to="#" className="btn btn-searchset">
                                         <i data-feather="search" className="feather-search" />
                                     </Link>
                                 </div>
@@ -110,20 +173,22 @@ const MenuPage = () => {
                                 <thead>
                                     <tr>
                                         <th>Menu Name</th>
+                                        <th>Location</th>
                                         <th>Is Active</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {filteredData.length > 0 ? (
-                                        filteredData.map((item, index) => (
+                                    {currentData.length > 0 ? (
+                                        currentData.map((item, index) => (
                                             <tr key={index}>
                                                 <td
                                                     style={{ cursor: 'pointer', textDecoration: 'underline' }}
-                                                    onClick={() => handleMenuClick(item.POS_MenuID)}
+                                                    onClick={() => handleMenuClick(item.MenuID, item.SourceType)}
                                                 >
                                                     {item.MenuName || "N/A"}
                                                 </td>
+                                                <td>{item.SourceType}</td>
                                                 <td>{item.IsActive ? "Yes" : "No"}</td>
                                                 <td>
                                                     <button type='button'
@@ -131,28 +196,88 @@ const MenuPage = () => {
                                                         className="btn btn-sm btn-primary me-2">
                                                         <i className="feather-edit"></i>
                                                     </button>
+                                                    {item.SourceType === "Global" && (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => HandleCopyMenu(item)}
+                                                            className="btn btn-sm btn-primary me-2"
+                                                        >
+                                                            Copy Menu
+                                                        </button>
+                                                    )}
                                                 </td>
                                             </tr>
                                         ))
                                     ) : (
                                         <tr>
-                                            <td colSpan="3" className="text-center">
+                                            <td colSpan="4" className="text-center">
                                                 No records found
                                             </td>
                                         </tr>
                                     )}
                                 </tbody>
                             </table>
+                            {totalPages > 1 && (<div className="d-flex justify-content-between align-items-center mt-3">
+                                <span>
+                                    Page {currentPage} of {totalPages}
+                                </span>
+                                <div>
+                                    {Array.from({ length: totalPages }, (_, i) => (
+                                        <Button
+                                            key={i}
+                                            variant={currentPage === i + 1 ? "primary" : "light"}
+                                            size="sm"
+                                            className="mx-1"
+                                            onClick={() => goToPage(i + 1)}
+                                        >
+                                            {i + 1}
+                                        </Button>
+                                    ))}
+                                </div>
+                                <div>
+                                    <Button
+                                        variant="secondary"
+                                        size="sm"
+                                        disabled={currentPage === 1}
+                                        onClick={() => setCurrentPage(currentPage - 1)}
+                                    >
+                                        Previous
+                                    </Button>
+                                    <Button
+                                        variant="secondary"
+                                        size="sm"
+                                        className="ms-2"
+                                        disabled={currentPage === totalPages}
+                                        onClick={() => setCurrentPage(currentPage + 1)}
+                                    >
+                                        Next
+                                    </Button>
+                                </div>
+                            </div>
+                            )}
                         </div>
                     </div>
                 </div>
             </div>
-            <MenuForm
-                onSubmit={handleAddProduct}
-                showModel={showModel}
-                handleClose={handleClose}
-                data={selectedData}
-            />
+            {showModel &&
+                <MenuForm
+                    onSubmit={handleAddProduct}
+                    showModel={showModel}
+                    handleClose={handleClose}
+                    data={selectedData}
+                />
+            }
+
+            {showCopyModel &&
+                <CopyMenuForm
+                    onSubmit={handleAddCopyMenu}
+                    showModel={showCopyModel}
+                    handleClose={handleCopyClose}
+                    data={selectedData}
+                    debtorList={debtorList}
+                    costCenterList={costCenterList}
+                />
+            }
         </div>
     );
 };

@@ -223,13 +223,29 @@ import EntityDataEntityContact from "../feature-module/EntityData/Entities/entit
 import EntityDataStatus from "../feature-module/EntityData/Status/status";
 import EntityDataStatusGroup from "../feature-module/EntityData/Status/statusGroup";
 import EntityDataTimeZone from "../feature-module/EntityData/TimeZone/timeZone";
+import EntityDataSlipPrinter from "../feature-module/EntityData/slipPrinter/slipPrinter";
+import PaymentTypes from "../feature-module/EntityData/Payment/paymentType";
+import TaxTypes from "../feature-module/EntityData/Tax/taxType";
+
 import Debtors from "../feature-module/Debtor/debtors";
+// import DebtorAddress from "../feature-module/Debtor/debtorAddress";
+import DebtorAddressType from "../feature-module/Debtor/debtorAddressType";
+import DebtorType from "../feature-module/Debtor/debtorType";
+import DebtorBranch from "../feature-module/Debtor/debtorBranch";
+import DebtorDepartment from "../feature-module/Debtor/debtorDepartment";
 import CostCenter from "../feature-module/Debtor/costCenter";
+import CostCenterType from "../feature-module/Debtor/costCenterType";
 import Creditor from "../feature-module/Creditor/creditor";
 import UnitPage from "../feature-module/Products/units";
 import ProductCategory from "../feature-module/Products/productCategory";
 import ProductType from "../feature-module/Products/productType";
 import ProductPage from "../feature-module/Products/product";
+import CombinationPage from "../feature-module/Products/combination";
+import ExtraPage from "../feature-module/Products/extra";
+import PreparationPage from "../feature-module/Products/preparation";
+import ExtraCategory from "../feature-module/Products/extraCategory";
+import PreparationMethod from "../feature-module/Products/preparationMethod";
+import SubstitutionPage from "../feature-module/Products/substitution";
 import PurchaseOrderPage from "../feature-module/stock/purchaseOrder";
 import PurchaseOrderLinePage from "../feature-module/stock/purchaseOrderLine";
 import PurchaseOrderSubmittedPage from "../feature-module/stock/purchaseOrderSubmitted";
@@ -240,7 +256,13 @@ import MenuPage from "../feature-module/menu/menu";
 import MenuItemPage from "../feature-module/menu/menuItem";
 import MenuItemProductPage from "../feature-module/menu/menuItemProduct";
 import MenuTreeBuilder from "../feature-module/menu/menuTreeBuilder";
+import MenuTreeCampBuilder from "../feature-module/menu/menuTreeCampBuilder";
 import OrderPlacePage from "../feature-module/order/orderPlace";
+import PurchaseOrderLineTree from "../feature-module/stock/purchaseOrderLineTree";
+import DebtorProduct from "../feature-module/stock/debtorProduct";
+import CostCenterProduct from "../feature-module/stock/costCenterProduct";
+import PriceCodePage from "../feature-module/stock/priceCode";
+import DebtorProductPagePage from "../feature-module/stock/debtorProductPrice";
 
 export const publicRoutes = [
   {
@@ -1137,7 +1159,7 @@ export const publicRoutes = [
     id: 87,
     path: routes.purchaseOrder,
     name: "purchaseorder",
-    element: <PurchaseOrderPage />,
+    element: <PurchaseOrderLineTree />,
     route: Route,
   },
   {
@@ -1147,6 +1169,13 @@ export const publicRoutes = [
     element: <PurchaseOrderLinePage />,
     route: Route,
   },
+  // {
+  //   id: 88,
+  //   path: routes.purchaseOrderTree,
+  //   name: "purchaseOrderTree",
+  //   element: <PurchaseOrderLineTree />,
+  //   route: Route,
+  // },
   {
     id: 89,
     path: routes.submittedPurchaseOrder,
@@ -1665,6 +1694,7 @@ export const publicRoutes = [
     element: <CostCenter />,
     route: Route,
   },
+
   {
     id: 140,
     path: routes.creditors,
@@ -1726,6 +1756,159 @@ export const publicRoutes = [
     path: routes.placeorder,
     name: "placeorder ",
     element: <OrderPlacePage />,
+    route: Route,
+  },
+
+  // {
+  //   id: 149,
+  //   path: routes.debtorAddress,
+  //   name: "debtor-address",
+  //   element: <DebtorAddress />,
+  //   route: Route,
+  // },
+
+  {
+    id: 150,
+    path: routes.debtorAddressType,
+    name: "debtor-address-type",
+    element: <DebtorAddressType />,
+    route: Route,
+  },
+  {
+    id: 151,
+    path: routes.debtorType,
+    name: "debtor-type",
+    element: <DebtorType />,
+    route: Route,
+  },
+
+  {
+    id: 152,
+    path: routes.debtorDepartment,
+    name: "debtor-department",
+    element: <DebtorDepartment />,
+    route: Route,
+  },
+
+  {
+    id: 153,
+    path: routes.debtorBranch,
+    name: "debtor-branch",
+    element: <DebtorBranch />,
+    route: Route,
+  },
+  {
+    id: 154,
+    path: routes.debtorcostCenterType,
+    name: "cost-center-type",
+    element: <CostCenterType />,
+    route: Route,
+  },
+
+  {
+    id: 155,
+    path: routes.entitySlipPrinter,
+    name: "slip-printer",
+    element: <EntityDataSlipPrinter />,
+    route: Route,
+  },
+
+  {
+    id: 156,
+    path: routes.entityPaymentType,
+    name: "payment-type",
+    element: <PaymentTypes />,
+    route: Route,
+  },
+
+  {
+    id: 157,
+    path: routes.entityTaxType,
+    name: "tax-type",
+    element: <TaxTypes />,
+    route: Route,
+  },
+  {
+    id: 158,
+    path: routes.stockdebtorproduct,
+    name: "location-product",
+    element: <DebtorProduct />,
+    route: Route,
+  },
+  {
+    id: 158,
+    path: routes.stockCostCenterproduct,
+    name: "cost-center-product",
+    element: <CostCenterProduct />,
+    route: Route,
+  },
+
+  {
+    id: 159,
+    path: routes.productCombination,
+    name: "productCombination",
+    element: <CombinationPage />,
+    route: Route,
+  },
+
+  {
+    id: 160,
+    path: routes.productExtra,
+    name: "productExtra",
+    element: <ExtraPage />,
+    route: Route,
+  },
+
+  {
+    id: 161,
+    path: routes.productPreparation,
+    name: "productPreparation",
+    element: <PreparationPage />,
+    route: Route,
+  },
+
+  {
+    id: 162,
+    path: routes.productExtraCategory,
+    name: "productExtraCategory",
+    element: <ExtraCategory />,
+    route: Route,
+  },
+
+  {
+    id: 163,
+    path: routes.productPreparationMethod,
+    name: "productPreparationMethod",
+    element: <PreparationMethod />,
+    route: Route,
+  },
+
+  {
+    id: 164,
+    path: routes.menutreeCamp,
+    name: "menuTreeCamp",
+    element: <MenuTreeCampBuilder />,
+    route: Route,
+  },
+  {
+    id: 165,
+    path: routes.productSubstitution,
+    name: "productSubstitution",
+    element: <SubstitutionPage />,
+    route: Route,
+  },
+  {
+    id: 165,
+    path: routes.priceCode,
+    name: "priceCode",
+    element: <PriceCodePage />,
+    route: Route,
+  },
+  {
+    id: 166,
+    path: routes.debtorProductPrice,
+    name: "productPreparation",
+    element: <DebtorProductPagePage />,
     route: Route,
   },
 ];

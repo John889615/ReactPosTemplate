@@ -8,6 +8,8 @@ import {
 } from "react-feather";
 import CreditorForm from "../../core/modals/creditor/creditorFormModel";
 
+import CreditorAddress from "./creditorAddress";
+import CreditorContact from "./creditorContact";
 
 
 const Creditor = () => {
@@ -17,7 +19,9 @@ const Creditor = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [showModel, setModelShow] = useState(false);
     const [selectedData, setSelectedData] = useState(null);
-
+    const [showAddressModel, setAddressModelShow] = useState(false);
+    const [showContactModel, setContactModelShow] = useState(false);
+    const [selectedCreditorId, setSelectedCreditorId] = useState(null);
     useEffect(() => {
         fetchRecords();
     }, []);
@@ -46,14 +50,13 @@ const Creditor = () => {
     const handleShow = () => setModelShow(true);
     const handleClose = () => setModelShow(false);
     const handleAddCreditor = async (data) => {
-        console.log("Data : ", data);
         try {
-            // if (data.POS_CostCenterID) {
-            //     await updateCostCenter(data);
-            // }
-            // else {
-            //     await newCreditor(data);
-            // }
+            if (data.POS_CostCenterID) {
+                await updateCostCenter(data);
+            }
+            else {
+                await newCreditor(data);
+            }
             await newCreditor(data);
             await fetchRecords();
             setModelShow(false);
@@ -63,10 +66,22 @@ const Creditor = () => {
     };
 
     const handleEditCreditor = (record) => {
-        console.log("User Data", record);
         setSelectedData(record);
         setModelShow(true);
     };
+
+    const handleAddAddress = (creditorId) => {
+        setSelectedCreditorId(creditorId);
+        setAddressModelShow(true);
+    };
+
+    const handleViewContacts = (creditorId) => {
+        setSelectedCreditorId(creditorId);
+        setContactModelShow(true);
+    };
+
+    const handleAddressClose = () => setAddressModelShow(false);
+    const handleContactClose = () => setContactModelShow(false);
 
     return (
         <div className="page-wrapper">
@@ -132,6 +147,22 @@ const Creditor = () => {
                                                         className="btn btn-sm btn-primary me-2">
                                                         <i className="feather-edit"></i>
                                                     </button>
+                                                    <button
+                                                        type='button'
+                                                        onClick={() => handleAddAddress(item.CreditorID)}
+                                                        className="btn btn-sm btn-info me-2"
+                                                        title="Add Address"
+                                                    >
+                                                        <i className="feather-map-pin"></i>
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleViewContacts(item.CreditorID)}
+                                                        className="btn btn-sm btn-warning"
+                                                        title="View Contacts"
+                                                    >
+                                                        <i className="feather-users"></i>
+                                                    </button>
                                                 </td>
                                             </tr>
                                         ))
@@ -148,14 +179,30 @@ const Creditor = () => {
                     </div>
                 </div>
             </div>
-            <CreditorForm creditorTypeList={CreditorTypeList}
-                onSubmitCreditor={handleAddCreditor}
-                showModel={showModel}
-                handleClose={handleClose}
-                data={selectedData}
-                statusList={statusList}
-                creditorList={listData}
-            />
+            {showModel && (
+                <CreditorForm creditorTypeList={CreditorTypeList}
+                    onSubmitCreditor={handleAddCreditor}
+                    showModel={showModel}
+                    handleClose={handleClose}
+                    data={selectedData}
+                    statusList={statusList}
+                    creditorList={listData}
+                />
+            )}
+
+            {showAddressModel &&
+                <CreditorAddress
+                    showAddressModel={showAddressModel}
+                    creditorId={selectedCreditorId}
+                    handleAddressClose={handleAddressClose}
+                />}
+
+            {showContactModel &&
+                <CreditorContact
+                    showContactModel={showContactModel}
+                    creditorId={selectedCreditorId}
+                    handleContactClose={handleContactClose}
+                />}
         </div>
     );
 };

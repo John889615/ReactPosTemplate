@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import { getAllAddressRegion } from "../../../services/entityData/addressRegion";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import {
-    PlusCircle,
-} from "react-feather";
+import { PlusCircle } from "react-feather";
 
 const EntityDataAddressRegion = () => {
     const [addressList, setAddressList] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+
+    // Pagination states
+    const [currentPage, setCurrentPage] = useState(1);
+    const recordsPerPage = 10;
 
     useEffect(() => {
         fetchAddresses();
@@ -31,6 +33,16 @@ const EntityDataAddressRegion = () => {
         )
     );
 
+    // Pagination logic
+    const indexOfLastRecord = currentPage * recordsPerPage;
+    const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+    const currentRecords = filteredData.slice(indexOfFirstRecord, indexOfLastRecord);
+    const totalPages = Math.ceil(filteredData.length / recordsPerPage);
+    const goToPage = (page) => {
+        if (page >= 1 && page <= totalPages) {
+            setCurrentPage(page);
+        }
+    };
     return (
         <div className="page-wrapper">
             <div className="content">
@@ -76,8 +88,8 @@ const EntityDataAddressRegion = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {filteredData.length > 0 ? (
-                                        filteredData.map((item, index) => (
+                                    {currentRecords.length > 0 ? (
+                                        currentRecords.map((item, index) => (
                                             <tr key={index}>
                                                 <td>{item.RegionName}</td>
                                                 <td>{item.Description}</td>
@@ -90,13 +102,51 @@ const EntityDataAddressRegion = () => {
                                         ))
                                     ) : (
                                         <tr>
-                                            <td colSpan="8" className="text-center">
+                                            <td colSpan="3" className="text-center">
                                                 No records found
                                             </td>
                                         </tr>
                                     )}
                                 </tbody>
                             </table>
+                            {totalPages > 1 && (<div className="d-flex justify-content-between align-items-center mt-3">
+                                <span>
+                                    Page {currentPage} of {totalPages}
+                                </span>
+                                <div>
+                                    {Array.from({ length: totalPages }, (_, i) => (
+                                        <Button
+                                            key={i}
+                                            variant={currentPage === i + 1 ? "primary" : "light"}
+                                            size="sm"
+                                            className="mx-1"
+                                            onClick={() => goToPage(i + 1)}
+                                        >
+                                            {i + 1}
+                                        </Button>
+                                    ))}
+                                </div>
+                                <div>
+                                    <Button
+                                        variant="secondary"
+                                        size="sm"
+                                        disabled={currentPage === 1}
+                                        onClick={() => setCurrentPage(currentPage - 1)}
+                                    >
+                                        Previous
+                                    </Button>
+                                    <Button
+                                        variant="secondary"
+                                        size="sm"
+                                        className="ms-2"
+                                        disabled={currentPage === totalPages}
+                                        onClick={() => setCurrentPage(currentPage + 1)}
+                                    >
+                                        Next
+                                    </Button>
+                                </div>
+                            </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -104,6 +154,5 @@ const EntityDataAddressRegion = () => {
         </div>
     );
 };
-
 
 export default EntityDataAddressRegion;

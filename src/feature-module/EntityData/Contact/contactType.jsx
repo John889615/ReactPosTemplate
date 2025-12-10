@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getAllContactType } from "../../../services/entityData/contactType";
-import { Button } from "react-bootstrap";
+import { Button, Pagination } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import {
     PlusCircle,
@@ -9,6 +9,8 @@ import {
 const EntityDataContactType = () => {
     const [addressList, setAddressList] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
 
     useEffect(() => {
         fetchAddresses();
@@ -30,6 +32,17 @@ const EntityDataContactType = () => {
                 value.toLowerCase().includes(searchTerm.toLowerCase())
         )
     );
+
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+    const goToPage = (page) => {
+        if (page >= 1 && page <= totalPages) {
+            setCurrentPage(page);
+        }
+    };
 
     return (
         <div className="page-wrapper">
@@ -77,8 +90,8 @@ const EntityDataContactType = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {filteredData.length > 0 ? (
-                                        filteredData.map((item, index) => (
+                                    {currentItems.length > 0 ? (
+                                        currentItems.map((item, index) => (
                                             <tr key={index}>
                                                 <td>{item.Type}</td>
                                                 <td>{item.IsPhoneNumberType ? "Yes" : "No"}</td>
@@ -99,6 +112,44 @@ const EntityDataContactType = () => {
                                     )}
                                 </tbody>
                             </table>
+                            {totalPages > 1 && (<div className="d-flex justify-content-between align-items-center mt-3">
+                                <span>
+                                    Page {currentPage} of {totalPages}
+                                </span>
+                                <div>
+                                    {Array.from({ length: totalPages }, (_, i) => (
+                                        <Button
+                                            key={i}
+                                            variant={currentPage === i + 1 ? "primary" : "light"}
+                                            size="sm"
+                                            className="mx-1"
+                                            onClick={() => goToPage(i + 1)}
+                                        >
+                                            {i + 1}
+                                        </Button>
+                                    ))}
+                                </div>
+                                <div>
+                                    <Button
+                                        variant="secondary"
+                                        size="sm"
+                                        disabled={currentPage === 1}
+                                        onClick={() => setCurrentPage(currentPage - 1)}
+                                    >
+                                        Previous
+                                    </Button>
+                                    <Button
+                                        variant="secondary"
+                                        size="sm"
+                                        className="ms-2"
+                                        disabled={currentPage === totalPages}
+                                        onClick={() => setCurrentPage(currentPage + 1)}
+                                    >
+                                        Next
+                                    </Button>
+                                </div>
+                            </div>
+                            )}
                         </div>
                     </div>
                 </div>

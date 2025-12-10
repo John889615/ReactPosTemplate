@@ -7,6 +7,7 @@ import { all_routes } from "../../Router/all_routes";
 import { useAuth } from "../../context/AuthContext";
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllDebtors } from "../../services/debtors/debtors";
+import getBranding from "../../utils/getBranding";
 
 
 const Header = () => {
@@ -16,6 +17,8 @@ const Header = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const { user } = useAuth();
   const debtors = useSelector((state) => state.debtors_data);
+
+  const branding = getBranding();
 
   const handleStoreChange = (e) => {
     const selectedId = e.target.value;
@@ -159,13 +162,13 @@ const Header = () => {
           onMouseOver={expandMenuOpen}
         >
           <Link to="/dashboard" className="logo logo-normal">
-            <ImageWithBasePath src="assets/img/logo.png" alt="img" />
+            <ImageWithBasePath src={branding.logo} alt="img" />
           </Link>
           <Link to="/dashboard" className="logo logo-white">
-            <ImageWithBasePath src="assets/img/logo-white.png" alt="img" />
+            <ImageWithBasePath src={branding.logoWhite} alt="img" />
           </Link>
           <Link to="/dashboard" className="logo-small">
-            <ImageWithBasePath src="assets/img/logo-small.png" alt="img" />
+            <ImageWithBasePath src={branding.smallLogo} alt="img" />
           </Link>
           <Link
             id="toggle_btn"

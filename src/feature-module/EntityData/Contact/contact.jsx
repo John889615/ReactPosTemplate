@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { getAllContact } from "../../../services/entityData/contact";
-import { Button } from "react-bootstrap";
+import { Button, Pagination } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import {
-    PlusCircle,
-} from "react-feather";
+import { PlusCircle } from "react-feather";
 
 const EntityDataContact = () => {
     const [addressList, setAddressList] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10; // 👈 adjust per your needs
 
     useEffect(() => {
         fetchAddresses();
@@ -23,6 +23,7 @@ const EntityDataContact = () => {
         }
     };
 
+    // ✅ Filter Data
     const filteredData = addressList.filter((item) =>
         Object.values(item).some(
             (value) =>
@@ -31,15 +32,19 @@ const EntityDataContact = () => {
         )
     );
 
+    // ✅ Pagination Logic
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
     return (
         <div className="page-wrapper">
             <div className="content">
-                <div className="page-header">
-                    <div className="add-item d-flex">
-                        <div className="page-title">
-                            <h4>Contacts List</h4>
-                            <h6>Manage Your Contact</h6>
-                        </div>
+                <div className="page-header d-flex justify-content-between align-items-center">
+                    <div className="page-title">
+                        <h4>Contacts List</h4>
+                        <h6>Manage Your Contact</h6>
                     </div>
                     <div className="page-btn">
                         <Button variant="none" className="btn btn-added">
@@ -48,6 +53,7 @@ const EntityDataContact = () => {
                         </Button>
                     </div>
                 </div>
+
                 <div className="card table-list-card">
                     <div className="card-body">
                         <div className="table-top">
@@ -58,7 +64,10 @@ const EntityDataContact = () => {
                                         placeholder="Search"
                                         className="form-control"
                                         value={searchTerm}
-                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        onChange={(e) => {
+                                            setSearchTerm(e.target.value);
+                                            setCurrentPage(1); // reset to first page on search
+                                        }}
                                     />
                                     <Link to className="btn btn-searchset">
                                         <i data-feather="search" className="feather-search" />
@@ -66,6 +75,7 @@ const EntityDataContact = () => {
                                 </div>
                             </div>
                         </div>
+
                         <div className="table-responsive">
                             <table className="table table-bordered table-striped">
                                 <thead>
@@ -77,8 +87,8 @@ const EntityDataContact = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {filteredData.length > 0 ? (
-                                        filteredData.map((item, index) => (
+                                    {currentItems.length > 0 ? (
+                                        currentItems.map((item, index) => (
                                             <tr key={index}>
                                                 <td>{item.ContactValue}</td>
                                                 <td>{item.IsVerified ? "Yes" : "No"}</td>
@@ -100,12 +110,26 @@ const EntityDataContact = () => {
                                 </tbody>
                             </table>
                         </div>
+
+                        {/* ✅ Pagination Component */}
+                        {totalPages > 1 && (
+                            <Pagination className="justify-content-end mt-3">
+                                {[...Array(totalPages)].map((_, index) => (
+                                    <Pagination.Item
+                                        key={index + 1}
+                                        active={index + 1 === currentPage}
+                                        onClick={() => setCurrentPage(index + 1)}
+                                    >
+                                        {index + 1}
+                                    </Pagination.Item>
+                                ))}
+                            </Pagination>
+                        )}
                     </div>
                 </div>
             </div>
         </div>
     );
 };
-
 
 export default EntityDataContact;

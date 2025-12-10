@@ -5,7 +5,7 @@ export const getAllProducts = async () => {
     try {
         const response = await api.get('/invetory/list/products');
         if (response.data && Array.isArray(response.data.Data)) {
-            return response.data.Data;  
+            return response.data.Data;
         } else {
             throw new Error("Unexpected response format");
         }
@@ -20,10 +20,16 @@ export const getAllProducts = async () => {
 
 export const newProduct = async (data) => {
     try {
-        const response = await api.post('/invetory/add/product', data); // Use POST
+        const response = await api.post('/invetory/add/product', data, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }); // Use POST
+        debugger
         console.log("response", response.data);
         return response.data;
     } catch (error) {
+        debugger;
         return error.response.data;
     }
 };
@@ -31,7 +37,11 @@ export const newProduct = async (data) => {
 
 export const updateProduct = async (data) => {
     try {
-        const response = await api.post('/invetory/update/product', data); // Use POST
+        const response = await api.post('/invetory/update/product', data, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }); // Use POST
         console.log("response", response.data);
         return response.data;
     } catch (error) {

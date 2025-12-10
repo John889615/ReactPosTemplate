@@ -7,10 +7,6 @@ const DebtorForm = ({ branchList,
     showModel,
     handleClose,
     debtorData,
-    departmentList,
-    debtorTypeList,
-    statusList,
-    debtorList
 }) => {
     const formRef = useRef(null);
 
@@ -25,17 +21,11 @@ const DebtorForm = ({ branchList,
         e.preventDefault();
         const form = e.target;
 
-        const FK_MasterDebtorID = form.FK_MasterDebtorID.value || null;
 
         const data = {
             ShortCode: form.ShortCode.value.trim(),
             Name: form.Name.value.trim(),
-            IsMasterDebtor: !FK_MasterDebtorID,
-            FK_MasterDebtorID: FK_MasterDebtorID ? parseInt(FK_MasterDebtorID) : null,
-            FK_DebtorTypeID: form.FK_DebtorTypeID.value ? parseInt(form.FK_DebtorTypeID.value) : null,
-            FK_BranchID: form.FK_BranchID.value ? parseInt(form.FK_BranchID.value) : null,
-            FK_DepartmentID: form.FK_DepartmentID.value ? parseInt(form.FK_DepartmentID.value) : null,
-            FK_StatusID: form.FK_StatusID.value ? parseInt(form.FK_StatusID.value) : null,
+            IsActive: form.IsActive.checked,
         };
 
         if (debtorData?.DebtorID) {
@@ -69,70 +59,20 @@ const DebtorForm = ({ branchList,
                                 <input name="Name" type="text" defaultValue={debtorData?.Name} className="form-control" required />
                             </div>
                         </div>
-
-                        <div className="col-lg-6">
-                            <div className="input-blocks">
-                                <label>Master Debtor</label>
-                                <select name="FK_MasterDebtorID" className="form-select" defaultValue={debtorData?.FK_MasterDebtorID}>
-                                    <option value="">Please select..</option>
-                                    {debtorList.map((item, index) => (
-                                        <option key={index} value={item.DebtorID}>
-                                            {item.Name + " / " + item.ShortCode}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
-                        <div className="col-lg-6">
-                            <div className="input-blocks">
-                                <label>Debtor Type</label>
-                                <select name="FK_DebtorTypeID" className="form-select" required defaultValue={debtorData?.FK_DebtorTypeID}>
-                                    <option value="">Please select..</option>
-                                    {debtorTypeList.map((role, index) => (
-                                        <option key={index} value={role.DebtorTypeID}>
-                                            {role.Type}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
-                        <div className="col-lg-6">
-                            <div className="input-blocks">
-                                <label>Branch</label>
-                                <select name="FK_BranchID" className="form-select" defaultValue={debtorData?.FK_BranchID}>
-                                    <option value="">Please select..</option>
-                                    {branchList.map((role, index) => (
-                                        <option key={index} value={role.BranchID}>
-                                            {role.ShortCode + " / " + role.Name}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
-                        <div className="col-lg-6">
-                            <div className="input-blocks">
-                                <label>Department</label>
-                                <select name="FK_DepartmentID" className="form-select" defaultValue={debtorData?.FK_DepartmentID}>
-                                    <option value="">Please select..</option>
-                                    {departmentList.map((role, index) => (
-                                        <option key={index} value={role.DepartmentID}>
-                                            {role.ShortCode + " / " + role.Name}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
-                        <div className="col-lg-6">
-                            <div className="input-blocks">
-                                <label>Status</label>
-                                <select name="FK_StatusID" required className="form-select" defaultValue={debtorData?.FK_StatusID}>
-                                    <option value="">Please select..</option>
-                                    {statusList.map((role, index) => (
-                                        <option key={index} value={role.StatusID}>
-                                            {role.DisplayName}
-                                        </option>
-                                    ))}
-                                </select>
+                        <div className="row mt-3">
+                            <div className="col-lg-6">
+                                <div className="input-blocks form-check">
+                                    <input
+                                        type="checkbox"
+                                        name="IsActive"
+                                        defaultChecked={debtorData?.IsActive}
+                                        className="form-check-input"
+                                        id="isActive"
+                                    />
+                                    <label className="form-check-label" htmlFor="isActive">
+                                        Is Active?
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -159,11 +99,6 @@ export default DebtorForm;
 
 DebtorForm.propTypes = {
     debtorData: PropTypes.object,
-    branchList: PropTypes.array.isRequired,
-    departmentList: PropTypes.array.isRequired,
-    debtorTypeList: PropTypes.array.isRequired,
-    statusList: PropTypes.array.isRequired,
-    debtorList: PropTypes.array.isRequired,
     onSubmitDebtor: PropTypes.func.isRequired,
     showModel: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,

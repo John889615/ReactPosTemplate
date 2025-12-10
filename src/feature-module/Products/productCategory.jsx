@@ -137,13 +137,15 @@ const ProductCategory = () => {
                     </div>
                 </div>
             </div>
-            <ProductCategoryForm
-                onSubmit={handleAddCategory}
-                showModel={showModel}
-                handleClose={handleClose}
-                data={selectedData}
-                categoryList={listData}
-            />
+            {showModel &&
+                <ProductCategoryForm
+                    onSubmit={handleAddCategory}
+                    showModel={showModel}
+                    handleClose={handleClose}
+                    data={selectedData}
+                    categoryList={listData}
+                />
+            }
         </div>
     );
 };

@@ -6,6 +6,7 @@ import { loginUser } from "../../../services/authService";
 import { useAuth } from "../../../context/AuthContext";
 import { useDispatch } from 'react-redux';
 import { getAllDebtors } from "../../../services/debtors/debtors";
+import getBranding  from "../../../utils/getBranding";
 
 
 const Signin = () => {
@@ -20,6 +21,9 @@ const Signin = () => {
   const togglePasswordVisibility = () => {
     setPasswordVisible((prevState) => !prevState);
   };
+
+  const branding = getBranding();
+
   const route = all_routes;
 
   const handleLogin = async (e) => {
@@ -59,15 +63,15 @@ const Signin = () => {
             <form onSubmit={handleLogin}>
               <div className="login-userset">
                 <div className="login-logo logo-normal">
-                  <ImageWithBasePath src="assets/img/logo.png" alt="img" />
+                  <ImageWithBasePath src={branding.logo} alt="img" />
                 </div>
                 <Link to={route.dashboard} className="login-logo logo-white">
-                  <ImageWithBasePath src="assets/img/logo-white.png" alt />
+                  <ImageWithBasePath src={branding.logoWhite} alt />
                 </Link>
                 <div className="login-userheading">
                   <h3>Sign In</h3>
                   <h4>
-                    Access the Dreamspos panel using your email and passcode.
+                    Access the {branding.appName} panel using your email and password.
                   </h4>
                 </div>
                 <div className="form-login mb-3">
@@ -175,7 +179,7 @@ const Signin = () => {
           </div>
           <div className="login-img">
             <ImageWithBasePath
-              src="assets/img/authentication/login02.png"
+              src={branding.loginImage}
               alt="img"
             />
           </div>

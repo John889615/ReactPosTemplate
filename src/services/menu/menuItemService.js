@@ -5,7 +5,7 @@ export const getAllMenuItem = async (menuId) => {
     try {
         const response = await api.post('/Menu/list/menu/items', { MenuID: menuId });
         if (response.data && Array.isArray(response.data.Data)) {
-            return response.data.Data;  
+            return response.data.Data;
         } else {
             throw new Error("Unexpected response format");
         }
@@ -20,7 +20,11 @@ export const getAllMenuItem = async (menuId) => {
 
 export const newMenuItem = async (data) => {
     try {
-        const response = await api.post('/Menu/add/menu/item', data); // Use POST
+        const response = await api.post('/Menu/add/menu/item', data, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }); // Use POST
         console.log("response", response.data);
         return response.data;
     } catch (error) {
@@ -31,7 +35,11 @@ export const newMenuItem = async (data) => {
 
 export const updateMenuItem = async (data) => {
     try {
-        const response = await api.post('/Menu/update/menu/item', data); // Use POST
+        const response = await api.post('/Menu/update/menu/item', data, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }); // Use POST
         console.log("response", response.data);
         return response.data;
     } catch (error) {

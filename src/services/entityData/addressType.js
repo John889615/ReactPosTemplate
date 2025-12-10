@@ -19,7 +19,7 @@ export const getAllAddressType = async () => {
 
 export const newAddressType = async (addressData) => {
     try {
-        const response = await api.post('/EntityData/Add/address/type', addressData); // Use POST
+        const response = await api.post('/EntityData/add/address/type', addressData); // Use POST
         console.log("response", response.data);
         return response.data;
     } catch (error) {

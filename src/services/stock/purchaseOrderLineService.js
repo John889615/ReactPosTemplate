@@ -18,9 +18,9 @@ export const getAllPurchaseOrderLine = async (purchaseOrderId) => {
 };
 
 export const newPurchaseOrderLine = async (data) => {
+    debugger;
     try {
         const response = await api.post('/Stock/add/purchase/order/line', data); // Use POST
-        console.log("response", response.data);
         return response.data;
     } catch (error) {
         return error.response.data;

@@ -10,7 +10,7 @@ import {
 } from "react-feather";
 import PurchaseOrderForm from "../../core/modals/stocks/purchaseOrderFormModel";
 import { useSelector } from 'react-redux';
-
+import { useNavigate } from 'react-router-dom';
 
 
 const PurchaseOrderPage = () => {
@@ -20,7 +20,7 @@ const PurchaseOrderPage = () => {
     const [showModel, setModelShow] = useState(false);
     const [selectedData, setSelectedData] = useState(null);
     const debtorId = useSelector((state) => state.selectedDebtorStore);
-
+    const navigate = useNavigate();
     useEffect(() => {
         fetchPurchaseOrder();
         fetchRecords();
@@ -79,6 +79,10 @@ const PurchaseOrderPage = () => {
         setModelShow(true);
     };
 
+    const handlePurchseOrderClick = (menuId) => {
+        navigate(`/purchase-order-tree/${menuId}`);
+    };
+
     return (
         <div className="page-wrapper">
             <div className="content">
@@ -133,7 +137,11 @@ const PurchaseOrderPage = () => {
                                     {filteredData.length > 0 ? (
                                         filteredData.map((item, index) => (
                                             <tr key={index}>
-                                                <td>{item.OrderNumber || "N/A"}</td>
+                                                <td style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                                                    onClick={() => handlePurchseOrderClick(item.POS_PurchaseOrderID)}
+                                                >
+                                                    {item.OrderNumber || "N/A"}
+                                                </td>
                                                 <td>{item.SupplierName || "N/A"}</td>
                                                 <td>{item.DebtorName || "N/A"}</td>
                                                 <td>{item.CostCenterName || "N/A"}</td>

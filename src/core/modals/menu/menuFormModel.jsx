@@ -20,16 +20,14 @@ const MenuForm = ({
     const handleSubmit = (e) => {
         e.preventDefault();
         const form = e.target;
-
         const menuData = {
             IsActive: form.IsActive.checked,
             MenuName: form.MenuName.value.trim(),
+            ImageFile: form.ImageFile.files[0] || null
         };
-
         if (data?.POS_MenuID) {
             menuData.POS_MenuID = data.POS_MenuID;
         }
-
         if (onSubmit) {
             onSubmit(menuData);
         }
@@ -62,6 +60,17 @@ const MenuForm = ({
                                 <label className="form-check-label" htmlFor="IsActive">
                                     Is Active
                                 </label>
+                            </div>
+                        </div>
+                        <div className="col-lg-12">
+                            <div className="input-blocks">
+                                <label>Menu Image</label>
+                                <input
+                                    name="ImageFile"
+                                    type="file"
+                                    accept="image/*"
+                                    className="form-control"
+                                />
                             </div>
                         </div>
                     </div>

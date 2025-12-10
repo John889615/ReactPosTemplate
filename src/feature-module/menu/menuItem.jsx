@@ -9,6 +9,7 @@ import {
     PlusCircle,
 } from "react-feather";
 import MenuItemForm from "../../core/modals/menu/menuItemFormModel";
+import { useSelector } from 'react-redux';
 
 const MenuItemPage = () => {
     const [listData, setListData] = useState([]);
@@ -17,15 +18,15 @@ const MenuItemPage = () => {
     const [showModel, setModelShow] = useState(false);
     const [selectedData, setSelectedData] = useState(null);
     const [selectedMenu, setSelectedMenu] = useState(0);
-
+    const debtorId = useSelector((state) => state.selectedDebtorStore);
 
     useEffect(() => {
         fetchRecords();
-    }, []);
+    }, [debtorId]);
 
     const fetchRecords = async () => {
         try {
-            const data = await getAllMenu();
+            const data = await getAllMenu(debtorId == null ? 1 : debtorId);
             setMenuListData(data);
         } catch (err) {
             console.error("Failed to load:", err.message);
@@ -81,6 +82,7 @@ const MenuItemPage = () => {
     };
 
     const HandleMenuItem = async (e) => {
+        debugger;
         const selectedId = e.target.value;
         if (selectedId == "") {
             setListData([]);
@@ -133,7 +135,7 @@ const MenuItemPage = () => {
                                 <select className="form-select" onChange={HandleMenuItem}>
                                     <option value="">Filter by Menus</option>
                                     {menulistData.map((item, index) => (
-                                        <option key={index} value={item.POS_MenuID}>
+                                        <option key={index} value={item.MenuID}>
                                             {item.MenuName}
                                         </option>
                                     ))}

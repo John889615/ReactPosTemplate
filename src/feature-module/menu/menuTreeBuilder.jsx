@@ -16,11 +16,13 @@ const MenuTreeBuilder = () => {
     const [showNewModal, setShowNewModal] = useState(false);
     const [newItemName, setNewItemName] = useState("");
     const [newItemDesc, setNewItemDesc] = useState("");
+    const [newItemImage, setNewItemImage] = useState(null);
     // Edit modal state
     const [showEditModal, setShowEditModal] = useState(false);
     const [editItem, setEditItem] = useState(null);
     const [editItemName, setEditItemName] = useState("");
     const [editItemDesc, setEditItemDesc] = useState("");
+    const [editItemImage, setEditItemImage] = useState(null);
     useEffect(() => {
         if (menuData && menuData.MenuItems && menuData.MenuItems.length > 0) {
             const expanded = {};
@@ -339,6 +341,10 @@ const MenuTreeBuilder = () => {
                                         Description: newItemDesc,
                                         FK_POS_MenuItemID: parentItemId // Use the parent item ID
                                     };
+                                    if (newItemImage) {
+                                        payload.ImageFile = newItemImage;
+                                    }
+
                                     try {
                                         const res = await newMenuItem(payload);
                                         debugger;
@@ -347,6 +353,7 @@ const MenuTreeBuilder = () => {
                                             setShowNewModal(false);
                                             setNewItemName("");
                                             setNewItemDesc("");
+                                            setNewItemImage(null);
                                             setParentItemId(null);
                                         } else {
                                             alert(res.Messages?.[0] || "Something went wrong.");
@@ -371,10 +378,17 @@ const MenuTreeBuilder = () => {
                                         />
                                         <input
                                             type="text"
-                                            className="form-control"
+                                            className="form-control mb-2"
                                             placeholder="Description"
                                             value={newItemDesc}
                                             onChange={e => setNewItemDesc(e.target.value)}
+                                        />
+                                        <input
+                                            name="ImageFile"
+                                            type="file"
+                                            accept="image/*"
+                                            className="form-control"
+                                            onChange={e => setNewItemImage(e.target.files[0])}
                                         />
                                     </div>
                                     <div className="modal-footer">
@@ -414,6 +428,9 @@ const MenuTreeBuilder = () => {
                                         FK_POS_MenuItemID: editItem.FK_POS_MenuItemID || null
                                     };
                                     debugger;
+                                    if (editItemImage) {
+                                        payload.ImageFile = editItemImage;
+                                    }
                                     try {
                                         const res = await updateMenuItem(payload);
                                         debugger;
@@ -421,6 +438,7 @@ const MenuTreeBuilder = () => {
                                             await fetchData();
                                             setShowEditModal(false);
                                             setEditItem(null);
+                                            setEditItemImage(null);
                                         } else {
                                             alert(res.Messages?.[0] || "Something went wrong.");
                                         }
@@ -442,6 +460,13 @@ const MenuTreeBuilder = () => {
                                             placeholder="Description"
                                             value={editItemDesc}
                                             onChange={e => setEditItemDesc(e.target.value)}
+                                        />
+                                        <input
+                                            name="ImageFile"
+                                            type="file"
+                                            accept="image/*"
+                                            className="form-control"
+                                            onChange={e => setEditItemImage(e.target.files[0])}
                                         />
                                     </div>
                                     <div className="modal-footer">

@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { getAllContinent } from "../../../services/entityData/continent";
-// import { Button } from "react-bootstrap";
+import { Button, Pagination } from "react-bootstrap";
 import { Link } from "react-router-dom";
-// import {
-//     PlusCircle,
-// } from "react-feather";
+
 
 const EntityDataContinent = () => {
     const [addressList, setAddressList] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
 
     useEffect(() => {
         fetchAddresses();
@@ -79,7 +79,7 @@ const EntityDataContinent = () => {
                                         filteredData.map((item, index) => (
                                             <tr key={index}>
                                                 <td>{item.Name}</td>
-                                                <td>{item.ShortCode}</td>   
+                                                <td>{item.ShortCode}</td>
                                             </tr>
                                         ))
                                     ) : (

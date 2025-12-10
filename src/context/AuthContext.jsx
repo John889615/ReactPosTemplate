@@ -26,11 +26,9 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = (data) => {
-    console.log("Login user", data);
 
     localStorage.setItem('token', data.AccessToken);
     const decoded = jwtDecode(data.AccessToken);
-    console.log("Decode", decoded);
     setUser({
       username: decoded.Name,
       userId: data.UserId,

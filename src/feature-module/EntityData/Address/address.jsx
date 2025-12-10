@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { getAllAddress } from "../../../services/entityData/address";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import {
-    PlusCircle,
-} from "react-feather";
+import { PlusCircle } from "react-feather";
 
 const EntityDataAddress = () => {
     const [addressList, setAddressList] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const recordsPerPage = 10; // ✅ how many rows per page
 
     useEffect(() => {
         fetchAddresses();
@@ -23,6 +23,7 @@ const EntityDataAddress = () => {
         }
     };
 
+    // ✅ filter data by search
     const filteredData = addressList.filter((item) =>
         Object.values(item).some(
             (value) =>
@@ -30,6 +31,17 @@ const EntityDataAddress = () => {
                 value.toLowerCase().includes(searchTerm.toLowerCase())
         )
     );
+
+    // ✅ pagination logic
+    const totalPages = Math.ceil(filteredData.length / recordsPerPage);
+    const startIndex = (currentPage - 1) * recordsPerPage;
+    const currentData = filteredData.slice(startIndex, startIndex + recordsPerPage);
+
+    const goToPage = (page) => {
+        if (page >= 1 && page <= totalPages) {
+            setCurrentPage(page);
+        }
+    };
 
     return (
         <div className="page-wrapper">
@@ -48,6 +60,7 @@ const EntityDataAddress = () => {
                         </Button>
                     </div>
                 </div>
+
                 <div className="card table-list-card">
                     <div className="card-body">
                         <div className="table-top">
@@ -58,7 +71,10 @@ const EntityDataAddress = () => {
                                         placeholder="Search"
                                         className="form-control"
                                         value={searchTerm}
-                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        onChange={(e) => {
+                                            setSearchTerm(e.target.value);
+                                            setCurrentPage(1); // reset to page 1 on search
+                                        }}
                                     />
                                     <Link to className="btn btn-searchset">
                                         <i data-feather="search" className="feather-search" />
@@ -66,6 +82,7 @@ const EntityDataAddress = () => {
                                 </div>
                             </div>
                         </div>
+
                         <div className="table-responsive">
                             <table className="table table-bordered table-striped">
                                 <thead>
@@ -81,8 +98,8 @@ const EntityDataAddress = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {filteredData.length > 0 ? (
-                                        filteredData.map((item, index) => (
+                                    {currentData.length > 0 ? (
+                                        currentData.map((item, index) => (
                                             <tr key={index}>
                                                 <td>{item.StreetAddress}</td>
                                                 <td>{item.Locality}</td>
@@ -107,27 +124,50 @@ const EntityDataAddress = () => {
                                     )}
                                 </tbody>
                             </table>
+                            {totalPages > 1 && (<div className="d-flex justify-content-between align-items-center mt-3">
+                                <span>
+                                    Page {currentPage} of {totalPages}
+                                </span>
+                                <div>
+                                    {Array.from({ length: totalPages }, (_, i) => (
+                                        <Button
+                                            key={i}
+                                            variant={currentPage === i + 1 ? "primary" : "light"}
+                                            size="sm"
+                                            className="mx-1"
+                                            onClick={() => goToPage(i + 1)}
+                                        >
+                                            {i + 1}
+                                        </Button>
+                                    ))}
+                                </div>
+                                <div>
+                                    <Button
+                                        variant="secondary"
+                                        size="sm"
+                                        disabled={currentPage === 1}
+                                        onClick={() => setCurrentPage(currentPage - 1)}
+                                    >
+                                        Previous
+                                    </Button>
+                                    <Button
+                                        variant="secondary"
+                                        size="sm"
+                                        className="ms-2"
+                                        disabled={currentPage === totalPages}
+                                        onClick={() => setCurrentPage(currentPage + 1)}
+                                    >
+                                        Next
+                                    </Button>
+                                </div>
+                            </div>
+                            )}
                         </div>
                     </div>
                 </div>
-
-                {/* <div className="mb-3">
-                    <input
-                        type="text"
-                        placeholder="Search"
-                        className="form-control"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                </div>
-
-                <div className="table-responsive">
-
-                </div> */}
             </div>
         </div>
     );
 };
-
 
 export default EntityDataAddress;

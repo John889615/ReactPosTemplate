@@ -122,6 +122,8 @@ const PaymentTypes = () => {
                                 <thead>
                                     <tr>
                                         <th>Name</th>
+                                        <th>Is Primary</th>
+                                        <th>Is Secondary</th>
                                         <th>Is Active</th>
                                         <th>Action</th>
                                     </tr>
@@ -131,6 +133,8 @@ const PaymentTypes = () => {
                                         currentRecords.map((item, index) => (
                                             <tr key={index}>
                                                 <td>{item.Name}</td>
+                                                <td>{item.IsPrimary ? "Yes" : "No"}</td>
+                                                <td>{item.IsSecondary ? "Yes" : "No"}</td>
                                                 <td>{item.IsActive ? "Yes" : "No"}</td>
                                                 <td>
                                                     <button

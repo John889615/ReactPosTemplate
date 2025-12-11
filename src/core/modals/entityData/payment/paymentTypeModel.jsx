@@ -21,10 +21,13 @@ const PaymentTypeForm = ({
     const handleSubmit = (e) => {
         e.preventDefault();
         const form = e.target;
-
+        debugger;
         const record = {
             IsActive: form.IsActive.checked,
+            IsSecondary: form.IsSecondary.checked,
+            IsPrimary: form.IsPrimary.checked,
             Name: form.Name.value.trim(),
+            FK_PaymentTypeIconID: form.FK_PaymentTypeIconID.value ? parseInt(form.FK_PaymentTypeIconID.value) : null,
         };
 
         if (data?.PaymentTypeID) {
@@ -64,7 +67,7 @@ const PaymentTypeForm = ({
                                 </select>
                             </div>
                         </div>
-                        <div className="col-lg-12 mt-3">
+                        <div className="col-lg-6">
                             <div className="form-check mb-2">
                                 <input
                                     type="checkbox"
@@ -77,7 +80,8 @@ const PaymentTypeForm = ({
                                     Is Primary
                                 </label>
                             </div>
-
+                        </div>
+                        <div className="col-lg-6">
                             <div className="form-check mb-3">
                                 <input
                                     type="checkbox"
@@ -90,6 +94,8 @@ const PaymentTypeForm = ({
                                     Is Secondary
                                 </label>
                             </div>
+                        </div>
+                        <div className="col-lg-6">
 
                             <div className="form-check mb-3">
                                 <input
